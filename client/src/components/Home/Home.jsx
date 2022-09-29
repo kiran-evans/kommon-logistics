@@ -1,12 +1,9 @@
-import DriverLogin from "../Driver/DriverLogin";
-import ManagerLogin from "../Manager/ManagerLogin";
+import Login from "./Login";
 
 const Home = (props) => {
     return (
         <div className="home">
-            <DriverLogin setCurrentUser={props.setCurrentUser} />
-            <ManagerLogin setCurrentUser={props.setCurrentUser} />
-
+            <Login setCurrentUser={props.setCurrentUser} />
         </div>
     )
 }

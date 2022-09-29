@@ -79,6 +79,17 @@ label {
 
 /* --------------- */
 
+.apiError {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  display: flex;
+  flex-direction: column;
+  padding: 1em 2em;
+  background-color: rgba(0, 0, 0, 0.8);
+  border: 0.2em solid rgba(255, 0, 0, 0.8);
+}
+
 .home {
   display: flex;
 }
@@ -155,7 +166,7 @@ button.deleteButton {
   background-color: #a22;
 }
 
-.deliveryForm, .driverForm {
+.deliveryForm, .userForm {
   display: flex;
   flex-direction: column;
   margin-bottom: 1em;
@@ -163,13 +174,13 @@ button.deleteButton {
   border-bottom: 0.1em solid white;
 }
 
-.deliveryForm h1, .driverForm h1 {
+.deliveryForm h1, .userForm h1 {
   font-size: 1.4em;
   text-align: left;
   font-weight: 500;
 }
 
-.driverForm h2 {
+.userForm h2 {
   font-size: 1.2em;
   text-align: left;
   font-weight: 500;
@@ -177,7 +188,7 @@ button.deleteButton {
   margin-top: 1em;
 }
 
-.deliveryForm form, .driverForm form {
+.deliveryForm form, .userForm form {
   display: flex;
   flex-direction: column;
 }

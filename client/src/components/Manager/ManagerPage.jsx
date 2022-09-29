@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import DeliveryCard from "../Delivery/DeliveryCard";
 import DriverCard from "../Driver/DriverCard";
 import DeliveryForm from "./DeliveryForm";
-import DriverForm from "./DriverForm";
+import UserForm from "./UserForm";
 
 const ManagerPage = (props) => {
 
@@ -12,7 +12,7 @@ const ManagerPage = (props) => {
     const [drivers, setDrivers] = useState([]);
     const [deliveries, setDeliveries] = useState([]);
     const [deliveryChange, setDeliveryChange] = useState(false);
-    const [driverChange, setDriverChange] = useState(false);
+    const [userChange, setUserChange] = useState(false);
 
     useEffect(() => {
         const getDeliveries = async () => {
@@ -31,9 +31,9 @@ const ManagerPage = (props) => {
 
     useEffect(() => {
         const getDrivers = async () => {
-            setDriverChange(false);
+            setUserChange(false);
             try {
-                const res = await axios.get("http://localhost:5000/api/driver");
+                const res = await axios.get("http://localhost:5000/api/user?userType=driver");
                 return setDrivers(res.data);
 
             } catch (err) {
@@ -41,7 +41,7 @@ const ManagerPage = (props) => {
             }
         }
         getDrivers();
-    }, [driverChange]);
+    }, [userChange]);
 
     // console.log(manager);
 
@@ -60,13 +60,13 @@ const ManagerPage = (props) => {
                 <div className="dashboardComponent">
                     <h3>Drivers</h3>
                     {drivers.map(driver => (
-                        <DriverCard key={driver._id} id={driver._id} username={driver.username} name={driver.name} maxCarryWeight={driver.maxCarryWeight} assignedDeliveries={driver.assignedDeliveries} isManager={manager.isManager} setDriverChange={setDriverChange} />
+                        <DriverCard key={driver._id} id={driver._id} username={driver.username} name={driver.name} userInfo={driver.userInfo} assignedDeliveries={driver.assignedDeliveries} isManager={manager.isManager} setUserChange={setUserChange} />
                     ))}
                 </div>
                 <div className="dashboardComponent">
                     <h3>Manage</h3>
                     <DeliveryForm setDeliveryChange={setDeliveryChange} />
-                    <DriverForm setDriverChange={setDriverChange} />
+                    <UserForm setUserChange={setUserChange} />
                 </div>
             </div>
 

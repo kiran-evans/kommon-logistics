@@ -2,9 +2,9 @@ import './App.css';
 import { useState } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Home from "./components/Home/Home";
-import DriverPage from './components/Driver/DriverPage';
-import ManagerPage from './components/Manager/ManagerPage';
+import Dashboard from './components/Dashboard/Dashboard';
 import Header from './components/Header/Header';
+import NotFound from './components/Error/NotFound';
 
 function App() {
 
@@ -17,8 +17,8 @@ function App() {
         <div className='mainContainer'>
           <Routes>
             <Route exact path="/" element={<Home setCurrentUser={setCurrentUser} />} />
-            <Route exact path="/driver" element={<DriverPage currentUser={currentUser} />} />
-            <Route exact path="/manager" element={<ManagerPage currentUser={currentUser} />} />
+            <Route exact path="/dashboard" element={<Dashboard currentUser={currentUser} />} />
+            <Route path="/*" element={<NotFound />} />
           </Routes>  
         </div>    
       </div>

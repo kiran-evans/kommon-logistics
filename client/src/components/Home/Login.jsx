@@ -2,7 +2,7 @@ import axios from "axios";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-const ManagerLogin = (props) => {
+const Login = (props) => {
 
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
@@ -18,19 +18,19 @@ const ManagerLogin = (props) => {
                 password: password
             }
 
-            const res = await axios.post("http://localhost:5000/api/manager/login", body);
+            const res = await axios.post("http://localhost:5000/api/user/login", body);
             props.setCurrentUser(res.data);
 
         } catch (err) {
             return console.log(err);
         }
 
-        return navigator("/manager");
+        return navigator("/dashboard");
     }
 
     return (
         <div className="login">
-            <h2>Manager Login</h2>
+            <h2>Login</h2>
             <form onSubmit={e => submitHandler(e)} className="loginForm">
                 <label htmlFor="username">Username</label>
                 <input type="username" name="username" placeholder="Username" value={username} onChange={e => setUsername(e.target.value)} required />
@@ -44,4 +44,4 @@ const ManagerLogin = (props) => {
     )
 }
 
-export default ManagerLogin;
+export default Login;

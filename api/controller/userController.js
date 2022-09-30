@@ -82,13 +82,13 @@ const getUser = async (req, res) => {
 const updateUser = async (req, res) => {
 
   try {
-    const user = getUser({query: {id: req.query.id}});
+    const user = await User.findById(req.query.id);
   
     if (!user) {
-      res.status(404).json({ message: `Cannot update user as no user found with id=${req.query.id}` });
+      return res.status(404).json({ message: `Cannot update user as no user found with id=${req.query.id}` });
     }
 
-    const updateSchema = await Driver.findByIdAndUpdate(
+    const updateSchema = await User.findByIdAndUpdate(
       req.query.id,
       req.body,
       { new: true, }

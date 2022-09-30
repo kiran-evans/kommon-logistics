@@ -1,4 +1,4 @@
-import DeliveryCard from "../Delivery/DeliveryCard";
+import DeliveryCard from "../delivery/DeliveryCard";
 
 const DriverPage = (props) => {
 

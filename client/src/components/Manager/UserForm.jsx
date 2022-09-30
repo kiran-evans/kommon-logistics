@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useState } from "react";
-import APIError from "../Popups/APIError";
+import APIError from "../popups/APIError";
 
 const UserForm = (props) => {
 
@@ -41,8 +41,8 @@ const UserForm = (props) => {
             <h1>Create New User</h1>
             <form onSubmit={e => handleSubmit(e)}>
                 <label htmlFor="userType">Account Type</label>
-                <select required name="userType" onChange={e => setUserType(e.target.value)}>
-                    <option selected disabled>Select account type</option>
+                <select required name="userType" onChange={e => setUserType(e.target.value)} defaultValue='Default'>
+                    <option disabled hidden value='Default'>Select account type</option>
                     <option value='Driver'>Driver</option>
                     <option value='Manager'>Manager</option>
                 </select>

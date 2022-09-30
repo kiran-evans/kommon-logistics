@@ -1,31 +1,24 @@
-import axios from "axios";
-import { useState } from "react";
+import { CircularProgress } from "@mui/material";
+import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { loginCall } from "../../context/APICalls";
+import { AuthContext } from "../../context/AuthContext";
 
-const Login = (props) => {
+const Login = () => {
 
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
-
+    const { isFetching, error, dispatch } = useContext(AuthContext);
     const navigator = useNavigate();
 
     const submitHandler = async (e) => {
         e.preventDefault();
+        await loginCall({
+            username: username,
+            password: password,
+        }, dispatch);
 
-        try {
-            const body = {
-                username: username,
-                password: password
-            }
-
-            const res = await axios.post("http://localhost:5000/api/user/login", body);
-            props.setCurrentUser(res.data);
-
-        } catch (err) {
-            return console.log(err);
-        }
-
-        return navigator("/dashboard");
+        return navigator('/dashboard');
     }
 
     return (
@@ -38,7 +31,7 @@ const Login = (props) => {
                 <label htmlFor="password">Password</label>
                 <input type="password" name="password" placeholder="Password" value={password} onChange={e => setPassword(e.target.value)} required />
 
-                <button type="submit">Login</button>
+                {isFetching ? <button type="button" disabled><CircularProgress /></button> : <button type="submit">Login</button>}
             </form>
         </div>
     )

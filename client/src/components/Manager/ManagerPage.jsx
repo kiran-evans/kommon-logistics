@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useState, useEffect } from "react";
-import DeliveryCard from "../Delivery/DeliveryCard";
-import DriverCard from "../Driver/DriverCard";
+import DeliveryCard from "../delivery/DeliveryCard";
+import DriverCard from "../driver/DriverCard";
 import DeliveryForm from "./DeliveryForm";
 import UserForm from "./UserForm";
 

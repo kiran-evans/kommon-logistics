@@ -29,9 +29,9 @@ const DriverCard = (props) => {
             });
 
             props.setDriverChange(res);
-            setIsEditing(false);
+            return setIsEditing(false);
         } catch (err) {
-            console.log(err);
+            return console.log(err);
         }
     }
 

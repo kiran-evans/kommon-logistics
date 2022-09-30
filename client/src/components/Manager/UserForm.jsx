@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useState } from "react";
-import APIError from "../Error/APIError";
+import APIError from "../Popups/APIError";
 
 const UserForm = (props) => {
 
@@ -26,7 +26,7 @@ const UserForm = (props) => {
                 userInfo: userInfo,
             });
 
-            props.setUserChange(res);
+            props.setDriverChange(res);
             setUsername('');
             setPassword('');
             setName('');

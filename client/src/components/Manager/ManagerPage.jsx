@@ -1,13 +1,14 @@
 import axios from "axios";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
+import { AuthContext } from "../../context/AuthContext";
 import DeliveryCard from "../delivery/DeliveryCard";
 import DriverCard from "../driver/DriverCard";
 import DeliveryForm from "./DeliveryForm";
 import UserForm from "./UserForm";
 
-const ManagerPage = (props) => {
+const ManagerPage = () => {
 
-    const manager = props.currentUser;
+    const { user } = useContext(AuthContext);
 
     const [drivers, setDrivers] = useState([]);
     const [deliveries, setDeliveries] = useState([]);
@@ -22,7 +23,7 @@ const ManagerPage = (props) => {
                 return setDeliveries(res.data);
 
             } catch (err) {
-                console.log(err);
+                return console.log(err);
             }
         }
 
@@ -48,19 +49,19 @@ const ManagerPage = (props) => {
     return (
         <div className="managerPage">
             <h1>Manager Dashboard</h1>
-            <h2>{manager.name}'s Dashboard | Manager {parseInt(manager._id.slice(-3), 16)}</h2>
+            <h2>{user.name}'s Dashboard | Manager {parseInt(user._id.slice(-3), 16)}</h2>
 
             <div className="managerMainContainer">
                 <div className="dashboardComponent">
                     <h3>Deliveries</h3>
                     {deliveries.map(delivery => (
-                        <DeliveryCard key={delivery._id} id={delivery._id} location={delivery.location} weight={delivery.weight} assignedDriverId={delivery.assignedDriverId} isDelivered={delivery.isDelivered} dateAdded={delivery.dateAdded} isManager={manager.isManager} setDeliveryChange={setDeliveryChange} />
+                        <DeliveryCard key={delivery._id} id={delivery._id} location={delivery.location} weight={delivery.weight} assignedDriverId={delivery.assignedDriverId} isDelivered={delivery.isDelivered} dateAdded={delivery.dateAdded} setDeliveryChange={setDeliveryChange} />
                     ))}
                 </div>
                 <div className="dashboardComponent">
                     <h3>Drivers</h3>
                     {drivers.map(driver => (
-                        <DriverCard key={driver._id} id={driver._id} username={driver.username} name={driver.name} userInfo={driver.userInfo} assignedDeliveries={driver.assignedDeliveries} isManager={manager.isManager} setDriverChange={setDriverChange} />
+                        <DriverCard key={driver._id} id={driver._id} username={driver.username} name={driver.name} userInfo={driver.userInfo} assignedDeliveries={driver.assignedDeliveries} setDriverChange={setDriverChange} />
                     ))}
                 </div>
                 <div className="dashboardComponent">

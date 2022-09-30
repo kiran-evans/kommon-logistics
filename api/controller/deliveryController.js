@@ -1,15 +1,5 @@
 const Delivery = require('../model/deliverySchema');
 
-const getAllDeliverys = async (req, res) => {
-  const delivery = await Delivery.find();
-  res.status(200).json(delivery);
-};
-
-const getDeliveryByID = async (req, res) => {
-  const delivery = await Delivery.findById(req.params.id);
-  res.status(200).json(delivery);
-};
-
 const createDelivery = async (req, res) => {
     try {
         // Create new user
@@ -20,40 +10,75 @@ const createDelivery = async (req, res) => {
         });
 
         // Respond
-        const delivery = await newDelivery.save();
-        res.status(201).json(newDelivery);
+        await newDelivery.save();
+        return res.status(201).json({ message: `Created new delivery. ${newDelivery}` });
 
     } catch(err) {
-        console.log("ERROR: Failed to create new delivery.");
-        return res.status(500).json(err);
+        return res.status(500).json({ message: `Failed to create new delivery. ${err}` });
     }
+};
+
+const getDelivery = async (req, res) => {
+  if (JSON.stringify(req.query) === '{}') { // No query
+    try {
+      const delivery = await Delivery.find();
+      return res.status(200).json(delivery);
+
+    } catch (err) {
+      return res.status(500).json({ message: `Failed to get all deliveries. ${err}` });
+    }
+  }
+
+  if (req.query.id) {
+    try {
+      const delivery = await Delivery.findById(req.query.id);
+
+      if (!delivery) {
+        return res.status(404).json({ message: `No delivery found with id=${req.query.id}` });
+      }
+
+      return res.status(200).json(delivery);
+
+    } catch (err) {
+      return res.status(500).json({ message: `Failed to get delivery with id=${req.query.id}. ${err}` });
+    }
+  }
+
+  return res.status(400).json({ message: `Could not get delivery because ${JSON.stringify(req.query)} is not a valid query.` });
 };
 
 const updateDelivery = async (req, res) => {
-  const delivery = await Delivery.findById(req.params.id);
-
-  if (!delivery) {
-    res.status(400).json({ message: `delivery not found` });
-  }
-
-  const updateSchema = await Delivery.findByIdAndUpdate(
-    req.params.id,
-    req.body,
-    {
-      new: true,
+  try {
+    const delivery = await Delivery.findById(req.query.id);
+  
+    if (!delivery) {
+      return res.status(404).json({ message: `Could not update delivery because no delivery was found with id=${req.query.id}` });
     }
-  );
-  res.status(200).json(updateSchema);
+  
+    const updateSchema = await Delivery.findByIdAndUpdate(
+      req.query.id,
+      req.body,
+      { new: true, }
+    );
+    return res.status(200).json({ message: `Updated delivery. ${updateSchema}` });
+
+  } catch (err) {
+    return res.status(500).json({ message: `Failed to update delivery. ${err}` });
+  }
 };
 
 const deleteDelivery = async (req, res) => {
-  await Delivery.findByIdAndDelete(req.params.id);
-  res.status(204).json({ id: req.params.id });
+  try {
+    await Delivery.findByIdAndDelete(req.query.id);
+    return res.status(204).json({ message: `Deleted delivery with id=${req.query.id}` });
+
+  } catch (err) {
+    return res.status(500).json({ message: `Failed to delete delivery. ${err}` });
+  }
 };
 
 module.exports = {
-  getAllDeliverys,
-  getDeliveryByID,
+  getDelivery,
   createDelivery,
   updateDelivery,
   deleteDelivery,

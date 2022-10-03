@@ -7,10 +7,6 @@ const userInfoSchema = mongoose.Schema({
     min: 10,
     max: 2000,
   },
-  assignedDeliveries: {
-    type: Array,
-    required: false,
-  },
 });
 
 const userSchema = mongoose.Schema({

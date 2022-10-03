@@ -146,13 +146,13 @@ label {
 .dashboard {
   flex: 1;
   display: flex;
-  align-items: center;
-  justify-content: center;
 }
 
 .dashboardComponent {
   flex: 1;
   padding: 1em 2em;
+  display: flex;
+  flex-direction: column;
 }
 
 .dashboardComponent h1 {
@@ -195,6 +195,10 @@ label {
   width: 2.5em;
   padding: 0;
   margin: 0 0.2em;
+}
+
+button.addButton {
+  background-color: #272;
 }
 
 button.editButton {
@@ -244,12 +248,26 @@ button.deleteButton {
 
 /* Delivery and driver cards */
 
+.dashboardMap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
 .deliveryCard, .driverCard {
+  display: flex;
+  flex-direction: column;
   border: 0.1em solid white;
   border-radius: 0.5em;
-  padding: 1.2em 1.5em;
+  padding: 1.5em 1.5em;
   margin: 2em 0;
+  width: 60%;
 }
+
+.deliveryCard h1, .driverCard h1 {
+  font-size: 1.4em;
+  margin: 0.2em 0;
+} 
 
 .deliveryCard h2, .driverCard h2 {
   font-size: 1.3em;

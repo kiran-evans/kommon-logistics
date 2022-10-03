@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useState } from "react";
 import APIError from "../popups/APIError";
+import { PropTypes } from "prop-types";
 
 const UserForm = (props) => {
     const API_URL = import.meta.env.VITE_API_URL;
@@ -9,7 +10,7 @@ const UserForm = (props) => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [name, setName] = useState('');
-    const [maxCarryWeight, setMaxCarryWeight] = useState();
+    const [maxCarryWeight, setMaxCarryWeight] = useState('');
     const [errorMsg, setErrorMsg] = useState('');
 
     const handleSubmit = async (e) => {
@@ -19,7 +20,7 @@ const UserForm = (props) => {
         if (maxCarryWeight) userInfo = { maxCarryWeight: maxCarryWeight };
 
         try {
-            const res = await axios.post(`${API_URL}api/user`, {
+            await axios.post(`${API_URL}/user`, {
                 userType: userType,
                 username: username,
                 password: password,
@@ -27,13 +28,13 @@ const UserForm = (props) => {
                 userInfo: userInfo,
             });
 
-            props.setDriverChange(res);
+            props.setDataChange(true);
             setUsername('');
             setPassword('');
             setName('');
-            setMaxCarryWeight('');
+            return setMaxCarryWeight('');
         } catch (err) {
-            setErrorMsg(err);
+            return setErrorMsg(err);
         }
     }
 
@@ -74,6 +75,10 @@ const UserForm = (props) => {
             {errorMsg && <APIError errorMsg={errorMsg} />}
         </div>
     )
+}
+
+UserForm.propTypes = {
+    setDataChange: PropTypes.func.isRequired
 }
 
 export default UserForm;

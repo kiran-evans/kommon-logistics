@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useState } from "react";
 import { CircularProgress } from '@mui/material'
+import { PropTypes } from "prop-types";
 
 const DeliveryForm = (props) => {
     const API_URL = import.meta.env.VITE_API_URL;
@@ -14,13 +15,13 @@ const DeliveryForm = (props) => {
         setIsLoading(true);
 
         try {
-            const res = await axios.post(`${API_URL}api/delivery`, {
+            await axios.post(`${API_URL}/delivery`, {
                 location: location,
                 weight: weight,
                 dateAdded: Date.now()
             });
 
-            props.setDeliveryChange(res);
+            props.setDataChange(true);
             setLocation('');
             setWeight('');
             return setIsLoading(false);
@@ -44,6 +45,10 @@ const DeliveryForm = (props) => {
             </form>
         </div>
     )
+}
+
+DeliveryForm.propTypes = {
+    setDataChange: PropTypes.func.isRequired
 }
 
 export default DeliveryForm;

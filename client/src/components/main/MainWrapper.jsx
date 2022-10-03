@@ -1,5 +1,5 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
-import { useContext } from 'react';
+import { useContext, useEffect } from 'react';
 import { AuthContext } from '../../context/AuthContext';
 import Home from "../home/Home";
 import Dashboard from '../dashboard/Dashboard';
@@ -8,7 +8,6 @@ import NotFound from '../error/NotFound';
 import Register from '../register/Register';
 
 const MainWrapper = () => {
-
     const { user } = useContext(AuthContext);
 
     return (

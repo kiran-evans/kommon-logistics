@@ -1,34 +1,59 @@
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import axios from 'axios';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { PropTypes } from "prop-types";
 
 const DriverCard = (props) => {
 
-    const { id, username, name, userInfo, assignedDeliveries } = props;
+    const API_URL = import.meta.env.VITE_API_URL;
+
+    const { id, username, name, userInfo } = props;
 
     const [isEditing, setIsEditing] = useState(false);
     const [editedName, setEditedName] = useState(name);
     const [editedUsername, setEditedUsername] = useState(username);
     const [editedMaxCarryWeight, setEditedMaxCarryWeight] = useState(userInfo.maxCarryWeight);
+    const [assignedDeliveries, setAssignedDeliveries] = useState([]);
+    const [currentlyCarrying, setCurrentlyCarrying] = useState(0);
 
-    const editButtonClick = () => {
-        setIsEditing(!isEditing);
-    }
+    useEffect(() => {
+        const getMyDeliveries = async () => {
+            try {
+                const res = await axios.get(`${API_URL}/delivery?assignedDriverId=${id}`);
+                return setAssignedDeliveries([...res.data]);
+            } catch (err) {
+                return console.log(err);
+            }
+        }
+        getMyDeliveries();
+    }, []);
 
-    const handleSubmit = async (e) => {
+    useEffect(() => {
+        const getCurrentlyCarrying = () => {
+            if (assignedDeliveries.length === 0) return;
+            let newWeight = 0;
+            for (let i = 0; i < assignedDeliveries.length; i++) {
+                newWeight += assignedDeliveries[i].weight;
+            }
+            return setCurrentlyCarrying(newWeight);
+        }
+        getCurrentlyCarrying();
+    }, [assignedDeliveries]);
+
+    const handleEditSubmit = async (e) => {
         e.preventDefault();
 
         const editedUserInfo = { maxCarryWeight: editedMaxCarryWeight, assignedDeliveries: assignedDeliveries };
 
         try {
-            const res = await axios.put(`http://localhost:5000/api/user?id=${id}`, {
+            await axios.put(`${API_URL}/user?id=${id}`, {
                 username: editedUsername,
                 name: editedName,
                 userInfo: editedUserInfo,
             });
 
-            props.setDriverChange(res);
+            props.setDataChange(true);
             return setIsEditing(false);
         } catch (err) {
             return console.log(err);
@@ -37,21 +62,22 @@ const DriverCard = (props) => {
 
     const deleteButtonClick = async () => {
         try {
-            props.setDriverChange(await axios.delete(`http://localhost:5000/api/user?id=${id}`));
+            await axios.delete(`${API_URL}/api/user?id=${id}`)
+            return props.setDataChange(true);
         } catch (err) {
-            console.log(err);
+            return console.log(err);
         }
     }
 
     return (
         <div className="driverCard">
             <div className="managerButtons">
-                <button className="editButton" title="Edit this driver" onClick={() => editButtonClick()}><EditIcon /></button>
+                <button className="editButton" title="Edit this driver" onClick={() => setIsEditing(!isEditing)}><EditIcon /></button>
                 <button className="deleteButton" title="Delete this driver" onClick={() => deleteButtonClick()}><DeleteIcon /></button>
             </div>
             {isEditing ? 
                 <>
-                    <form className="userForm" onSubmit={e => handleSubmit(e)}>
+                    <form className="userForm" onSubmit={e => handleEditSubmit(e)}>
                         <label htmlFor="name">Name</label>
                         <input required name="name" type="text" value={editedName} onChange={e => setEditedName(e.target.value)} placeholder="e.g. Joe Bloggs"></input>
 
@@ -66,19 +92,27 @@ const DriverCard = (props) => {
                 </>
                 :
                 <>
-                <h1>{name}</h1>
-                <h2>Username: {username}</h2>
-                <h2>Driver number: {parseInt(id.slice(-3).toUpperCase(), 16)}</h2>
-                {userInfo && 
-                    <>
-                        <h3>Max. carry weight: {userInfo.maxCarryWeight}kg</h3>
-                        {userInfo.assignedDeliveries.length === 0 ? <h3>No assigned deliveries</h3> : <h3>Already assigned deliveries</h3>}
-                    </>
-                }
-                </>
+                    <h1>{name} (Driver number {parseInt(id.slice(-3).toUpperCase(), 16)})</h1>
+                    <h2>Username: {username}</h2>
+                    {userInfo && <h3>Max. carry weight: {userInfo.maxCarryWeight}kg</h3>}
+                    <h3>Assigned deliveries: {assignedDeliveries.length > 0 ? assignedDeliveries.length : 'None'}</h3>
+                    {assignedDeliveries.length > 0 && 
+                        <>
+                            <h3>Currently carrying: {currentlyCarrying}kg ({parseInt(currentlyCarrying/userInfo.maxCarryWeight*100)}% capacity)</h3>
+                        </>
+                    }
+                </>    
             }
         </div>
     )
+}
+
+DriverCard.propTypes = {
+    id: PropTypes.string.isRequired,
+    username: PropTypes.string.isRequired,
+    name: PropTypes.string,
+    userInfo: PropTypes.object.isRequired,
+    setDataChange: PropTypes.func.isRequired
 }
 
 export default DriverCard;

@@ -19,7 +19,7 @@ const Header = () => {
     <div className="header">
       <div className="menu"></div>
       <div className="logo">
-        <Link to="/"><h1>Qommon Logistics</h1></Link>
+        <Link to="/"><h1>Kommon Logistics</h1></Link>
       </div>
       <div className="userButtons">
         {user &&

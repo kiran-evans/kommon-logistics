@@ -8,6 +8,8 @@ import UserForm from "./UserForm";
 
 const ManagerPage = () => {
 
+    const API_URL = import.meta.env.VITE_API_URL;
+
     const { user } = useContext(AuthContext);
 
     const [drivers, setDrivers] = useState([]);
@@ -19,7 +21,7 @@ const ManagerPage = () => {
         const getDeliveries = async () => {
             setDeliveryChange(false);
             try {
-                const res = await axios.get("http://localhost:5000/api/delivery");
+                const res = await axios.get(`${API_URL}/delivery`);
                 return setDeliveries(res.data);
 
             } catch (err) {
@@ -34,7 +36,7 @@ const ManagerPage = () => {
         const getDrivers = async () => {
             setDriverChange(false);
             try {
-                const res = await axios.get("http://localhost:5000/api/user?userType=driver");
+                const res = await axios.get(`${API_URL}/user?userType=driver`);
                 return setDrivers(res.data);
 
             } catch (err) {

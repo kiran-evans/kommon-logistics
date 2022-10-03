@@ -3,6 +3,7 @@ import { useState } from "react";
 import { CircularProgress } from '@mui/material'
 
 const DeliveryForm = (props) => {
+    const API_URL = import.meta.env.VITE_API_URL;
 
     const [location, setLocation] = useState('');
     const [weight, setWeight] = useState('');
@@ -13,7 +14,7 @@ const DeliveryForm = (props) => {
         setIsLoading(true);
 
         try {
-            const res = await axios.post("http://localhost:5000/api/delivery", {
+            const res = await axios.post(`${API_URL}api/delivery`, {
                 location: location,
                 weight: weight,
                 dateAdded: Date.now()

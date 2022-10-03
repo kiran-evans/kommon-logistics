@@ -1,8 +1,13 @@
 import './App.css';
 import { AuthContextProvider } from './context/AuthContext';
-import MainWrapper from './components/main/MainWrapper'
+import MainWrapper from './components/main/MainWrapper';
+import { useEffect } from 'react';
 
 function App() {
+
+  useEffect(() => {
+    document.title = import.meta.env.VITE_APP_TITLE;
+  }, [])
 
   return (
     <AuthContextProvider>

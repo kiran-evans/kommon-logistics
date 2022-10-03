@@ -3,6 +3,7 @@ import { useState } from "react";
 import APIError from "../popups/APIError";
 
 const UserForm = (props) => {
+    const API_URL = import.meta.env.VITE_API_URL;
 
     const [userType, setUserType] = useState('');
     const [username, setUsername] = useState('');
@@ -18,7 +19,7 @@ const UserForm = (props) => {
         if (maxCarryWeight) userInfo = { maxCarryWeight: maxCarryWeight };
 
         try {
-            const res = await axios.post("http://localhost:5000/api/user", {
+            const res = await axios.post(`${API_URL}api/user`, {
                 userType: userType,
                 username: username,
                 password: password,

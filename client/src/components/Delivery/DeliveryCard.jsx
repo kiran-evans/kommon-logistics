@@ -7,6 +7,7 @@ import { AuthContext } from "../../context/AuthContext";
 import { CircularProgress } from "@mui/material";
 
 const DeliveryCard = (props) => {
+    const API_URL = import.meta.env.VITE_API_URL;
     const { id, location, assignedDriverId, isDelivered, weight, dateAdded } = props;
 
     const [isEditing, setIsEditing] = useState(false);
@@ -23,7 +24,7 @@ const DeliveryCard = (props) => {
 
     const deleteButtonClick = async () => {
         try {
-            return props.setDeliveryChange(await axios.delete(`http://localhost:5000/api/delivery?id=${id}`));
+            return props.setDeliveryChange(await axios.delete(`${API_URL}/delivery?id=${id}`));
         } catch (err) {
             return console.log(err);
         }
@@ -34,7 +35,7 @@ const DeliveryCard = (props) => {
         setIsLoading(true);
 
         try {
-            const res = await axios.put(`http://localhost:5000/api/delivery?id=${id}`, {
+            const res = await axios.put(`${API_URL}/delivery?id=${id}`, {
                 location: editedLocation,
                 weight: editedWeight,
                 isDelivered: editedIsDelivered,

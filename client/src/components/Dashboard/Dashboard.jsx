@@ -2,7 +2,6 @@ import ManagerPage from '../manager/ManagerPage';
 import DriverPage from '../driver/DriverPage';
 import { useContext } from 'react';
 import { AuthContext } from '../../context/AuthContext';
-import { logoutCall } from '../../context/APICalls';
 
 const Dashboard = () => {
 

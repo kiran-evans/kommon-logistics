@@ -2,7 +2,7 @@ export const AuthReducer = (state, action) => {
     switch (action.type) {
         case 'LOGIN_START':
             return {
-                user: null, // Start with no user logged in
+                user: null,
                 isFetching: false,
                 error: false,
             }

@@ -23,9 +23,11 @@ const DeliveryCard = (props) => {
 
     const getMyDriver = async () => {
         if (!assignedDriverId) return;
+        setIsLoading(true);
         try {
             const res = await axios.get(`${API_URL}/user?id=${assignedDriverId}`);
-            return setMyDriver(res.data);
+            setMyDriver(res.data);
+            return setIsLoading(false);
         } catch (err) {
             return console.log(err);
         }
@@ -60,7 +62,7 @@ const DeliveryCard = (props) => {
                 assignedDriverId: selectedDriverId,
             });
 
-            props.setDataChange(true);
+            props.setDataChange('ALL');
             setIsAssigning(false);
             return setIsLoading(false);
 
@@ -81,65 +83,112 @@ const DeliveryCard = (props) => {
             });
             setIsEditing(false);
             setIsLoading(false);
-            return props.setDataChange(true);
+            props.setDataChange('ALL');
+            return;
         } catch (err) {
             return console.log(err);
         }
     }
 
+    const assignButtonClick = () => {
+        setIsAssigning(!isAssigning);
+        setIsEditing(false);
+    }
+
+    const editButtonClick = () => {
+        setIsEditing(!isEditing);
+        setIsAssigning(false);
+    }
+
     const deleteButtonClick = async () => {
         try {
             await axios.delete(`${API_URL}/delivery?id=${id}`)
-            return props.setDataChange(true);
+            props.setDataChange('ALL');
+            return;
+        } catch (err) {
+            return console.log(err);
+        }
+    }
+
+    const deliveredButtonClick = async () => {
+        setIsLoading(true);
+
+        try {
+            await axios.put(`${API_URL}/delivery?id=${id}`, {
+                isDelivered: !isDelivered,
+            });
+            setIsLoading(false);
+            props.setDataChange('ALL');
+            return;
         } catch (err) {
             return console.log(err);
         }
     }
 
     return (
-        <div className="deliveryCard">
+        <div className="card">
             {user.userType === 'MANAGER' &&
                 <div className="managerButtons">
-                    <button className={assignedDriverId ? 'editButton' : 'addButton'} title={assignedDriverId ? 'Change assigned driver for this delivery' : 'Assign driver to this delivery'} onClick={() => setIsAssigning(!isAssigning)}>{assignedDriverId ? <Person /> : <PersonAdd />}</button>
-                    <button className="editButton" title="Edit this delivery" onClick={() => setIsEditing(!isEditing)}><Edit /></button>
+                    <button className={assignedDriverId ? 'editButton' : 'addButton'} title={assignedDriverId ? 'Change assigned driver for this delivery' : 'Assign driver to this delivery'} onClick={() => assignButtonClick()}>{assignedDriverId ? <Person /> : <PersonAdd />}</button>
+                    <button className="editButton" title="Edit this delivery" onClick={() => editButtonClick()}><Edit /></button>
                     <button className="deleteButton" title="Delete this delivery" onClick={() => deleteButtonClick()}><Delete /></button>
                 </div>
             }
-            <h1>Delivery {id.slice(-6)}</h1>
-            <h2>Added: {new Intl.DateTimeFormat('en-GB', { hour: 'numeric', minute: 'numeric', day: 'numeric', month: 'short', year: 'numeric' }).format(Date.parse(dateAdded))}</h2>
+            <div className="cardTitle">Delivery {id.slice(-6)}</div>
+            <div className="cardInfo">Added: {new Intl.DateTimeFormat('en-GB', { hour: 'numeric', minute: 'numeric', day: 'numeric', month: 'short', year: 'numeric' }).format(Date.parse(dateAdded))}</div>
             {isEditing ? 
                 <>
-                    <form className="deliveryForm" onSubmit={e => handleEditSubmit(e)}>
-                        <label htmlFor="location">Location</label>
-                        <input required name="location" type="text" value={editedLocation} onChange={e => setEditedLocation(e.target.value)} placeholder="e.g. 221b Baker Street, London" />
+                    <form onSubmit={e => handleEditSubmit(e)}>
+                        <div className="formTitle">Edit Delivery</div>
+                        <fieldset>
+                            <label htmlFor="location">Location</label>
+                            <input required name="location" type="text" value={editedLocation} onChange={e => setEditedLocation(e.target.value)} placeholder="e.g. 221b Baker Street, London" />
+                        </fieldset>
 
-                        <label htmlFor="weight">Weight / kg</label>
-                        <input required name="weight" type="number" value={editedWeight} onChange={e => setEditedWeight(e.target.value)} placeholder="e.g. 1500" />
+                        <fieldset>
+                            <label htmlFor="weight">Weight / kg</label>
+                            <input required name="weight" type="number" value={editedWeight} onChange={e => setEditedWeight(e.target.value)} placeholder="e.g. 1500" />
+                        </fieldset>
 
-                        <label htmlFor="isDelivered">Delivered</label>
-                        <input name="isDelivered" type="checkbox" checked={editedIsDelivered} value={!editedIsDelivered} onChange={e => setEditedIsDelivered(e.target.value)} />
+                        <fieldset className="checkbox">
+                            <label htmlFor="isDelivered">Delivered</label>
+                            <input name="isDelivered" type="checkbox" checked={editedIsDelivered} value={!editedIsDelivered} onChange={e => setEditedIsDelivered(e.target.value)} />
+                        </fieldset>
 
-                        {isLoading ? <button type="button" disabled><CircularProgress /></button> : <button type="submit">Save changes</button>}
+                        {isLoading ? <div className="loadingSpinner"><CircularProgress /></div> : <button type="submit">Save changes</button>}
                     </form>
                 </>
                 :
                 <>
-                    <h2>Location: {location}</h2>
-                    <h3>Weight: {weight}kg</h3>
-                    {isAssigning ? <>
-                        <form onSubmit={e => handleDriverAssignSubmit(e)}>
-                            <select required onChange={e => setSelectedDriverId(e.target.value)} defaultValue='Default'>
-                                <option disabled hidden value='Default'>Select driver</option>
-                                {drivers.map(driver => (
-                                    <option key={driver._id} value={driver._id}>{driver.name} (Driver number {parseInt(driver._id.slice(-3).toUpperCase(), 16)})</option>
-                                ))}
-                            </select>
-                            {isLoading ? <button type="button" disabled><CircularProgress /></button> : <button type="submit">Assign driver</button>}
-                        </form>
+                    <div className="cardInfo">Location: {location}</div>
+                    <div className="cardInfo">Weight: {weight}kg</div>
+                    {isAssigning ?
+                        <>
+                            <form onSubmit={e => handleDriverAssignSubmit(e)}>
+                                <div className="formTitle">Assign Driver</div>
+                                <fieldset>
+                                    <select required onChange={e => setSelectedDriverId(e.target.value)} defaultValue={assignedDriverId ? assignedDriverId : 'Default'}>
+                                        <option disabled hidden value='Default'>Select driver</option>
+                                        {drivers.map(driver => (
+                                            <option key={driver._id} value={driver._id}>{driver.name} (Driver number {parseInt(driver._id.slice(-3).toUpperCase(), 16)})</option>
+                                        ))}
+                                    </select>
+                                </fieldset>
+                                {isLoading ? <div className="loadingSpinner"><CircularProgress /></div> : <button type="submit">Assign driver</button>}
+                            </form>
                         </>
                         :
-                        <h3>{myDriver && `Assigned driver: ${myDriver.name} (Driver number ${parseInt(myDriver._id.slice(-3).toUpperCase(), 16)})`}</h3>}
-                    <h3>Delivery status: {isDelivered ? 'Delivered' : 'Not delivered'}</h3>
+                        <>
+                            {myDriver ? (
+                                isLoading ? <div className="cardInfo"><div className="loadingSpinner"><CircularProgress /></div> Loading assigned driver...</div> : <div className="cardInfo">Assigned driver: {`${myDriver.name} (Driver ${myDriver._id.slice(-6)})`}</div>
+                            ) : <div className="cardInfo">Assigned driver: None</div>
+                            }
+                            <div className="cardInfo">Delivery status: {isDelivered ? 'Delivered' : 'Not delivered'}</div>
+                            {user.userType === 'DRIVER' && (
+                                isLoading ? <div className="loadingSpinner"><CircularProgress /></div> : <button onClick={() => deliveredButtonClick()}>Mark as {isDelivered ? 'Not delivered' : 'Delivered'}</button>
+                            )}
+                        </>
+                    }
                 </>
             }
         </div>

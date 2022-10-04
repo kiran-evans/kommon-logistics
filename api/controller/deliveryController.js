@@ -59,6 +59,17 @@ const getDelivery = async (req, res) => {
     }
   }
 
+  if (req.query.available) {
+    try {
+      const deliveries = await Delivery.find({ assignedDriverId: null });
+
+      return res.status(200).json(deliveries);
+
+    } catch (err) {
+      return res.status(500).json({ message: `Failed to get delivery with available=${req.query.available}. ${err}` });
+    }
+  }
+
   return res.status(400).json({ message: `Could not get delivery because ${JSON.stringify(req.query)} is not a valid query.` });
 };
 

@@ -1,72 +1,190 @@
+import { CircularProgress } from "@mui/material";
 import axios from "axios";
-import { useState, useEffect, useContext } from "react";
+import { useContext } from "react";
+import { useState, useEffect } from "react";
 import { AuthContext } from "../../context/AuthContext";
 import DeliveryCard from "../delivery/DeliveryCard";
 import DriverCard from "../driver/DriverCard";
 import DeliveryForm from "./DeliveryForm";
+import ManagerCard from "./ManagerCard";
 import UserForm from "./UserForm";
 
 const ManagerPage = () => {
 
-    const API_URL = import.meta.env.VITE_API_URL;
-
     const { user } = useContext(AuthContext);
 
+    const API_URL = import.meta.env.VITE_API_URL;
+
+    const [isLoading, setIsLoading] = useState(false);
     const [drivers, setDrivers] = useState([]);
+    const [managers, setManagers] = useState([]);
     const [deliveries, setDeliveries] = useState([]);
-    const [dataChange, setDataChange] = useState(false);
+    const [dataChange, setDataChange] = useState('ALL');
+    const [userView, setUserView] = useState('Drivers');
+    const views = ['Drivers', 'Managers'];
+
+    const getDeliveries = async () => {
+        setIsLoading(true);
+        try {
+            const res = await axios.get(`${API_URL}/delivery`);
+            setDeliveries(res.data);
+            setDataChange('NONE');
+            return setIsLoading(false);
+        } catch (err) {
+            return console.log(err);
+        }
+    }
+
+    const getDrivers = async () => {
+        setIsLoading(true);
+        try {
+            const res = await axios.get(`${API_URL}/user?userType=driver`);
+            setDrivers(res.data);
+            setDataChange('NONE');
+            return setIsLoading(false);
+        } catch (err) {
+            return console.log(err);
+        }
+    }
+
+    const getManagers = async () => {
+        setIsLoading(true);
+        try {
+            const res = await axios.get(`${API_URL}/user?userType=manager`);
+            setManagers(res.data);
+            setDataChange('NONE');
+            return setIsLoading(false);
+        } catch (err) {
+            return console.log(err);
+        }
+    }
+
+    const getData = async () => {
+        switch (dataChange.toUpperCase()) {
+            case 'NONE':
+                return;
+            case 'ALL':
+                getDeliveries();
+                getDrivers();
+                return getManagers();
+            case 'DELIVERY':
+                setDeliveries([]);
+                return getDeliveries();
+            case 'DRIVER':
+                setDrivers([]);
+                return getDrivers();
+            case 'MANAGER':
+                setManagers([]);
+                return getManagers();
+            default:
+                return setDataChange('NONE');
+        }
+    }
 
     useEffect(() => {
-        const getData = async () => {
-            setDeliveries([]);
-            setDrivers([]);
-
-            try {
-                const res1 = await axios.get(`${API_URL}/delivery`);
-                setDeliveries(res1.data);
-                const res2 = await axios.get(`${API_URL}/user?userType=driver`);
-                setDrivers(res2.data);
-                return;
-            } catch (err) {
-                return console.log(err);
-            }
-        }
-
         getData();
-        setDataChange(false);
+        setDataChange('NONE');
+    }, []);
+
+    useEffect(() => {
+        getData();
     }, [dataChange]);
 
-    // console.log(manager);
+    
+    const renderView = () => {
+        switch (userView) {
+            case 'Drivers':
+                return (
+                    <>
+                        <div className="dashboardComponent">
+                            {drivers.map(driver => (
+                                <DriverCard key={driver._id} id={driver._id} username={driver.username} name={driver.name} userInfo={driver.userInfo} setDataChange={setDataChange} />
+                            ))}
+                        </div>
+                    </>
+                )
+            case 'Managers':
+                return (
+                    <>
+                        <div className="dashboardComponent">
+                            {managers.map(manager => (
+                                <ManagerCard key={manager._id} id={manager._id} username={manager.username} name={manager.name} setDataChange={setDataChange} />
+                            ))}
+                        </div>
+                    </>
+                )
+            
+            default:
+                return (
+                    <div className="dashboardTitle">Select view</div>
+                )
+        }
+    }
 
     return (
-        <div className="managerPage">
-            <h1>Manager Dashboard</h1>
-            <h2>{user.name}&apos;s Dashboard | Manager {parseInt(user._id.slice(-3), 16)}</h2>
-
-            <div className="managerMainContainer">
-                <div className="dashboardComponent">
-                    <h3>Deliveries</h3>
-                    <div className="dashboardMap">
-                        {deliveries.map(delivery => (
-                            <DeliveryCard key={delivery._id} id={delivery._id} location={delivery.location} weight={delivery.weight} assignedDriverId={delivery.assignedDriverId} isDelivered={delivery.isDelivered} dateAdded={delivery.dateAdded} setDataChange={setDataChange} />
-                        ))}
-                    </div>
-                </div>
-                <div className="dashboardComponent">
-                    <h3>Drivers</h3>
-                    <div className="dashboardMap">
-                        {drivers.map(driver => (
-                            <DriverCard key={driver._id} id={driver._id} username={driver.username} name={driver.name} userInfo={driver.userInfo} setDataChange={setDataChange} />
-                        ))}
-                    </div>
-                </div>
-                <div className="dashboardComponent">
-                    <h3>Manage</h3>
-                    <DeliveryForm setDataChange={setDataChange} />
-                    <UserForm setDataChange={setDataChange} />
-                </div>
+        <div className="dashboardContainer">
+            <div className="dashboardHeaderContainer">
+                <h2>Manager Dashboard</h2>
             </div>
-
+            <div className="dashboardBodyContainer">
+                {isLoading && dataChange === 'ALL' ?
+                    <div className="dashboardColumn">
+                        <div className="dashboardTitle">
+                            <div className="loadingSpinner"><CircularProgress /> </div>
+                            Loading {user.name.split(" ")[0]}&apos;s dashboard...
+                        </div>
+                    </div>
+                    :
+                    <>
+                    <div className="dashboardColumn">
+                        {dataChange === 'DELIVERY' ?
+                            <div className="dashboardTitle">
+                                <div className="loadingSpinner"><CircularProgress /> </div>
+                                Loading {user.name.split(" ")[0]}&apos;s deliveries...
+                            </div>
+                            :
+                            <>
+                                <div className="dashboardTitle">Deliveries</div>
+                                <div className="dashboardComponent">
+                                {deliveries.map(delivery => (
+                                    <DeliveryCard key={delivery._id} id={delivery._id} location={delivery.location} weight={delivery.weight} assignedDriverId={delivery.assignedDriverId} isDelivered={delivery.isDelivered} dateAdded={delivery.dateAdded} setDataChange={setDataChange} />
+                                ))}
+                                </div>
+                            </>
+                        }
+                        
+                    </div>
+                    <div className="dashboardColumn">
+                        {dataChange === 'DRIVER' || dataChange === 'MANAGER' ?
+                            <div className="dashboardTitle">
+                                <div className="loadingSpinner"><CircularProgress /> </div>
+                                Loading {dataChange.toLowerCase()}s...
+                            </div>
+                            :
+                            <>
+                                <div className="dashboardTitle">
+                                    {userView}
+                                    <select onChange={e => setUserView(e.target.value)} defaultValue="Default">
+                                        <option disabled hidden value="Default">Change view</option>
+                                        {views.map(v => (
+                                            <option key={v} value={v}>View {v}</option>
+                                        ))}
+                                    </select>
+                                </div>
+                                {renderView()}
+                            </>
+                        }
+                    </div>
+                    <div className="dashboardColumn">
+                        <div className="dashboardTitle">Manage</div>
+                        <div className="dashboardComponent">
+                            <DeliveryForm setDataChange={setDataChange} />
+                            <UserForm setDataChange={setDataChange} />
+                        </div>
+                    </div>
+                    </>
+                }
+            </div>
         </div>
     )
 }

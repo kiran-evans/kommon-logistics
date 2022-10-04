@@ -9,7 +9,7 @@ const Dashboard = () => {
 
     return (
         <div className="dashboard">
-            {user.userType.toUpperCase() === 'MANAGER' ? <ManagerPage currentUser={user} /> : <DriverPage currentUser={user} />}
+            {user.userType.toUpperCase() === 'MANAGER' ? <ManagerPage /> : <DriverPage />}
         </div>
     )
 }

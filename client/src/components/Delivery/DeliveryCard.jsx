@@ -113,9 +113,12 @@ const DeliveryCard = (props) => {
     const deliveredButtonClick = async () => {
         setIsLoading(true);
 
+        const newId = isDelivered ? null : assignedDriverId;
+
         try {
             await axios.put(`${API_URL}/delivery?id=${id}`, {
                 isDelivered: !isDelivered,
+                assignedDriverId: newId
             });
             setIsLoading(false);
             props.setDataChange('ALL');
@@ -127,14 +130,16 @@ const DeliveryCard = (props) => {
 
     return (
         <div className="card">
-            {user.userType === 'MANAGER' &&
-                <div className="managerButtons">
-                    <button className={assignedDriverId ? 'editButton' : 'addButton'} title={assignedDriverId ? 'Change assigned driver for this delivery' : 'Assign driver to this delivery'} onClick={() => assignButtonClick()}>{assignedDriverId ? <Person /> : <PersonAdd />}</button>
-                    <button className="editButton" title="Edit this delivery" onClick={() => editButtonClick()}><Edit /></button>
-                    <button className="deleteButton" title="Delete this delivery" onClick={() => deleteButtonClick()}><Delete /></button>
-                </div>
-            }
-            <div className="cardTitle">Delivery {id.slice(-6)}</div>
+            <div className="cardHeader">
+                <div className="cardTitle">Delivery {id.slice(-6)}</div>
+                {user.userType === 'MANAGER' &&
+                    <div className="managerButtons">
+                        <button className={assignedDriverId ? 'editButton' : 'addButton'} title={assignedDriverId ? 'Change assigned driver for this delivery' : 'Assign driver to this delivery'} onClick={() => assignButtonClick()}>{assignedDriverId ? <Person /> : <PersonAdd />}</button>
+                        <button className="editButton" title="Edit this delivery" onClick={() => editButtonClick()}><Edit /></button>
+                        <button className="deleteButton" title="Delete this delivery" onClick={() => deleteButtonClick()}><Delete /></button>
+                    </div>
+                }
+            </div>
             <div className="cardInfo">Added: {new Intl.DateTimeFormat('en-GB', { hour: 'numeric', minute: 'numeric', day: 'numeric', month: 'short', year: 'numeric' }).format(Date.parse(dateAdded))}</div>
             {isEditing ? 
                 <>

@@ -1,6 +1,5 @@
 import axios from "axios";
 import { useState } from "react";
-import APIError from "../popups/APIError";
 import { PropTypes } from "prop-types";
 import { CircularProgress } from "@mui/material";
 
@@ -13,7 +12,6 @@ const UserForm = (props) => {
     const [password, setPassword] = useState('');
     const [name, setName] = useState('');
     const [maxCarryWeight, setMaxCarryWeight] = useState('');
-    const [errorMsg, setErrorMsg] = useState('');
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -37,7 +35,7 @@ const UserForm = (props) => {
             setMaxCarryWeight('');
             return setIsLoading(false);
         } catch (err) {
-            return setErrorMsg(err);
+            return console.log(err);
         }
     }
 
@@ -81,7 +79,6 @@ const UserForm = (props) => {
 
                 {isLoading ? <div className="loadingSpinner"><CircularProgress /></div> : <button type="submit">Create delivery</button>}
             </form>
-            {errorMsg && <APIError errorMsg={errorMsg} />}
         </div>
     )
 }

@@ -1,4 +1,4 @@
-const APIError = (props) => {
+const Popup = (props) => {
 
     const errorMsg = props.errorMsg;
 
@@ -11,4 +11,4 @@ const APIError = (props) => {
     )
 }
 
-export default APIError;
+export default Popup;

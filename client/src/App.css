@@ -165,17 +165,6 @@ button[type="submit"] {
   margin: 0;
 }
 
-.apiError {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  display: flex;
-  flex-direction: column;
-  padding: 1em 2em;
-  background-color: rgba(0, 0, 0, 0.8);
-  border: 0.2em solid rgba(255, 0, 0, 0.8);
-}
-
 /* Dashboard general */
 
 .dashboard {
@@ -245,6 +234,11 @@ button[type="submit"] {
   margin: 2em 2vw;
 }
 
+.cardHeader {
+  display: flex;
+  justify-content: space-between;
+}
+
 .cardTitle {
   font-size: 1.5em;
   font-weight: 700;
@@ -260,7 +254,6 @@ button[type="submit"] {
 
 .managerButtons {
   display: flex;
-  justify-content: flex-end;
 }
 
 .managerButtons button {
@@ -294,4 +287,9 @@ button.deleteButton {
 
 .driverMainContainer {
   display: flex;
+}
+
+#map {
+  min-height: 50vh;
+  width: 100%;
 }

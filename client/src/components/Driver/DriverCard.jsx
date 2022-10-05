@@ -113,10 +113,13 @@ const DriverCard = (props) => {
 
     return (
         <div className="card">
-            <div className="managerButtons">
-                <button className="editButton" title="Manage this driver's deliveries" onClick={() => deliveriesButtonClick()}><LocalShipping /></button>
-                <button className="editButton" title="Edit this driver" onClick={() => editButtonClick()}><EditIcon /></button>
-                <button className="deleteButton" title="Delete this driver" onClick={() => deleteButtonClick()}><DeleteIcon /></button>
+            <div className="cardHeader">
+                <div className="cardTitle">{name} (Driver {id.slice(-6)})</div>
+                <div className="managerButtons">
+                    <button className="editButton" title="Manage this driver's deliveries" onClick={() => deliveriesButtonClick()}><LocalShipping /></button>
+                    <button className="editButton" title="Edit this driver" onClick={() => editButtonClick()}><EditIcon /></button>
+                    <button className="deleteButton" title="Delete this driver" onClick={() => deleteButtonClick()}><DeleteIcon /></button>
+                </div>
             </div>
             {isEditing ? 
                 <>
@@ -142,7 +145,6 @@ const DriverCard = (props) => {
                 </>
                 :
                 <>
-                    <div className="cardTitle">{name} (Driver {id.slice(-6)})</div>
                     <div className="cardInfo">Username: {username}</div>
                     {userInfo && <div className="cardInfo">Max. carry weight: {userInfo.maxCarryWeight}kg</div>}
                     {isLoading ?

@@ -3,7 +3,7 @@ import { useContext } from 'react';
 import { AuthContext } from '../../context/AuthContext';
 import Dashboard from '../dashboard/Dashboard';
 import Header from '../header/Header';
-import NotFound from '../error/NotFound';
+import NotFound from '../notfound/NotFound';
 import Register from '../register/Register';
 import Login from '../login/Login';
 

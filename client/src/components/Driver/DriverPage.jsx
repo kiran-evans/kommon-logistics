@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useContext } from "react";
 import { AuthContext } from "../../context/AuthContext";
 import DeliveryCard from "../delivery/DeliveryCard";
+import MapPlotter from "./MapPlotter";
 
 const DriverPage = () => {
 
@@ -13,12 +14,14 @@ const DriverPage = () => {
     const [dataChange, setDataChange] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const [assignedDeliveries, setAssignedDeliveries] = useState([]);
+    const [displayMapPlotter, setDisplayMapPlotter] = useState(false);
 
     const getMyDeliveries = async () => {
         setIsLoading(true);
         try {
             const res = await axios.get(`${API_URL}/delivery?assignedDriverId=${user._id}`);
             setAssignedDeliveries(res.data);
+            setDisplayMapPlotter(true);
             return setIsLoading(false);
         } catch (err) {
             return console.log(err);
@@ -53,6 +56,12 @@ const DriverPage = () => {
                                 <DeliveryCard key={delivery._id} id={delivery._id} location={delivery.location} weight={delivery.weight} isDelivered={delivery.isDelivered} dateAdded={delivery.dateAdded} setDataChange={setDataChange} />
                             )) : <p>No assigned deliveries</p>
                             }
+                        </div>
+                    </div>
+                    <div className="dashboardColumn">
+                        <div className="dashboardTitle">Map</div>
+                        <div className="dashboardComponent">
+                            {displayMapPlotter && <MapPlotter assignedDeliveries={assignedDeliveries} />}
                         </div>
                     </div>
                 </div>

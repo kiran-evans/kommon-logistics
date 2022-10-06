@@ -115,12 +115,10 @@ const DeliveryCard = (props) => {
     const deliveredButtonClick = async () => {
         setIsLoading(true);
 
-        const newId = isDelivered ? null : assignedDriverId;
-
         try {
             await axios.put(`${API_URL}/delivery?id=${id}`, {
-                isDelivered: !isDelivered,
-                assignedDriverId: newId
+                isDelivered: true,
+                assignedDriverId: null
             });
             setIsLoading(false);
             props.setDataChange('ALL');
@@ -149,17 +147,17 @@ const DeliveryCard = (props) => {
                         <div className="formTitle">Edit Delivery</div>
                         <fieldset>
                             <label htmlFor="location">Location</label>
-                            <input required name="location" type="text" value={editedLocation} onChange={e => setEditedLocation(e.target.value)} placeholder="e.g. 221b Baker Street, London" />
+                            <input required name="location" type="text" autoComplete="address" value={editedLocation} onChange={e => setEditedLocation(e.target.value)} placeholder="e.g. 221b Baker Street, London" />
                         </fieldset>
 
                         <fieldset>
                             <label htmlFor="weight">Weight / kg</label>
-                            <input required name="weight" type="number" value={editedWeight} onChange={e => setEditedWeight(e.target.value)} placeholder="e.g. 1500" />
+                            <input required name="weight" type="number" autoComplete="off" value={editedWeight} onChange={e => setEditedWeight(e.target.value)} placeholder="e.g. 1500" />
                         </fieldset>
 
                         <fieldset className="checkbox">
                             <label htmlFor="isDelivered">Delivered</label>
-                            <input name="isDelivered" type="checkbox" checked={editedIsDelivered} value={!editedIsDelivered} onChange={e => setEditedIsDelivered(e.target.value)} />
+                            <input name="isDelivered" type="checkbox" autoComplete="off" checked={editedIsDelivered} value={!editedIsDelivered} onChange={e => setEditedIsDelivered(e.target.value)} />
                         </fieldset>
 
                         {isLoading ? <div className="loadingSpinner"><CircularProgress /></div> : <button type="submit">Save changes</button>}
@@ -174,7 +172,7 @@ const DeliveryCard = (props) => {
                             <form onSubmit={e => handleDriverAssignSubmit(e)}>
                                 <div className="formTitle">Assign Driver</div>
                                 <fieldset>
-                                    <select required onChange={e => setSelectedDriverId(e.target.value)} defaultValue={assignedDriverId ? assignedDriverId : 'Default'}>
+                                    <select required autoComplete="off" onChange={e => setSelectedDriverId(e.target.value)} defaultValue={assignedDriverId ? assignedDriverId : 'Default'}>
                                         <option disabled hidden value='Default'>Select driver</option>
                                         {drivers.map(driver => (
                                             <option key={driver._id} value={driver._id}>{driver.name} (Driver number {parseInt(driver._id.slice(-3).toUpperCase(), 16)})</option>
@@ -192,7 +190,7 @@ const DeliveryCard = (props) => {
                             }
                             <div className="cardInfo">Delivery status: {isDelivered ? 'Delivered' : 'Not delivered'}</div>
                             {user.userType === 'DRIVER' && (
-                                isLoading ? <div className="loadingSpinner"><CircularProgress /></div> : <button onClick={() => deliveredButtonClick()}>Mark as {isDelivered ? 'Not delivered' : 'Delivered'}</button>
+                                isLoading ? <div className="loadingSpinner"><CircularProgress /></div> : <button onClick={() => deliveredButtonClick()}>Mark as delivered</button>
                             )}
                         </>
                     }

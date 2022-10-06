@@ -20,8 +20,11 @@ const ManagerPage = () => {
     const [managers, setManagers] = useState([]);
     const [deliveries, setDeliveries] = useState([]);
     const [dataChange, setDataChange] = useState('ALL');
-    const [userView, setUserView] = useState('Drivers');
-    const views = ['Drivers', 'Managers'];
+
+    const deliveryViews = ['Undelivered', 'Delivered'];
+    const [deliveryView, setDeliveryView] = useState(deliveryViews[0]);
+    const userViews = ['Drivers', 'Managers'];
+    const [userView, setUserView] = useState(userViews[0]);
 
     const getDeliveries = async () => {
         setIsLoading(true);
@@ -90,33 +93,53 @@ const ManagerPage = () => {
         getData();
     }, [dataChange]);
 
+    const renderDeliveryView = () => {
+        switch (deliveryView) {
+            case 'Undelivered':
+                return (
+                    <>
+                        {deliveries.filter(d => !d.isDelivered).map(delivery => (
+                            <DeliveryCard key={delivery._id} id={delivery._id} location={delivery.location} weight={delivery.weight} assignedDriverId={delivery.assignedDriverId} isDelivered={delivery.isDelivered} dateAdded={delivery.dateAdded} setDataChange={setDataChange} />
+                        ))}
+                    </>
+                )
+            case 'Delivered':
+                return (
+                    <>
+                        {deliveries.filter(d => d.isDelivered).map(delivery => (
+                            <DeliveryCard key={delivery._id} id={delivery._id} location={delivery.location} weight={delivery.weight} assignedDriverId={delivery.assignedDriverId} isDelivered={delivery.isDelivered} dateAdded={delivery.dateAdded} setDataChange={setDataChange} />
+                        ))}
+                    </>
+                )
+            default:
+                return (
+                    <div className="dashboardTitle">Select view</div>
+                )
+        }
+    }
     
-    const renderView = () => {
+    const renderUserView = () => {
         switch (userView) {
             case 'Drivers':
                 return (
                     <>
-                        <div className="dashboardComponent">
-                            {drivers.map(driver => (
-                                <DriverCard key={driver._id} id={driver._id} username={driver.username} name={driver.name} userInfo={driver.userInfo} setDataChange={setDataChange} />
-                            ))}
-                        </div>
+                        {drivers.map(driver => (
+                            <DriverCard key={driver._id} id={driver._id} username={driver.username} name={driver.name} userInfo={driver.userInfo} setDataChange={setDataChange} />
+                        ))}
                     </>
                 )
             case 'Managers':
                 return (
                     <>
-                        <div className="dashboardComponent">
-                            {managers.map(manager => (
-                                <ManagerCard key={manager._id} id={manager._id} username={manager.username} name={manager.name} setDataChange={setDataChange} />
-                            ))}
-                        </div>
+                        {managers.map(manager => (
+                            <ManagerCard key={manager._id} id={manager._id} username={manager.username} name={manager.name} setDataChange={setDataChange} />
+                        ))}
                     </>
                 )
             
             default:
                 return (
-                    <div className="dashboardTitle">Select view</div>
+                    <p>Select view</p>
                 )
         }
     }
@@ -144,11 +167,17 @@ const ManagerPage = () => {
                             </div>
                             :
                             <>
-                                <div className="dashboardTitle">Deliveries</div>
+                                <div className="dashboardTitle">
+                                    {deliveryView}
+                                    <select onChange={e => setDeliveryView(e.target.value)} defaultValue="Default">
+                                        <option disabled hidden value="Default">Change view</option>
+                                        {deliveryViews.map(v => (
+                                            <option key={v} value={v}>View {v}</option>
+                                        ))}
+                                    </select>
+                                </div>
                                 <div className="dashboardComponent">
-                                {deliveries.map(delivery => (
-                                    <DeliveryCard key={delivery._id} id={delivery._id} location={delivery.location} weight={delivery.weight} assignedDriverId={delivery.assignedDriverId} isDelivered={delivery.isDelivered} dateAdded={delivery.dateAdded} setDataChange={setDataChange} />
-                                ))}
+                                        {renderDeliveryView()}
                                 </div>
                             </>
                         }
@@ -166,12 +195,14 @@ const ManagerPage = () => {
                                     {userView}
                                     <select onChange={e => setUserView(e.target.value)} defaultValue="Default">
                                         <option disabled hidden value="Default">Change view</option>
-                                        {views.map(v => (
+                                        {userViews.map(v => (
                                             <option key={v} value={v}>View {v}</option>
                                         ))}
                                     </select>
                                 </div>
-                                {renderView()}
+                                <div className="dashboardComponent">
+                                    {renderUserView()}
+                                </div>
                             </>
                         }
                     </div>

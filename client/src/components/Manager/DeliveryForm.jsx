@@ -37,12 +37,12 @@ const DeliveryForm = (props) => {
             <div className="formTitle">Create New Delivery</div>
                 <fieldset>
                     <label htmlFor="location">Location</label>
-                    <input required type="text" name="location" placeholder="e.g. 221b Baker Street, London" value={location} onChange={e => setLocation(e.target.value)} />
+                    <input required type="text" autoComplete="address" name="location" placeholder="e.g. 221b Baker Street, London" value={location} onChange={e => setLocation(e.target.value)} />
                 </fieldset>
 
                 <fieldset>
                     <label htmlFor="weight">Weight / kg</label>
-                    <input required type="number" min={10} max={2000} name="weight" placeholder="e.g. 150" value={weight} onChange={e => setWeight(e.target.value)} />
+                    <input required type="number" autoComplete="off" min={10} max={2000} name="weight" placeholder="e.g. 150" value={weight} onChange={e => setWeight(e.target.value)} />
                 </fieldset>
 
                 {isLoading ? <div className="loadingSpinner"><CircularProgress /></div> : <button type="submit">Create delivery</button>}

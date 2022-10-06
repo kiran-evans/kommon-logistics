@@ -20,7 +20,8 @@ const DriverPage = () => {
         setIsLoading(true);
         try {
             const res = await axios.get(`${API_URL}/delivery?assignedDriverId=${user._id}`);
-            setAssignedDeliveries(res.data);
+            const deliveries = res.data.filter(d => !d.isDelivered); // Exlude ones that are already delivered
+            setAssignedDeliveries(deliveries);
             setDisplayMapPlotter(true);
             return setIsLoading(false);
         } catch (err) {

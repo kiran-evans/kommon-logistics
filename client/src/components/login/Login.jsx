@@ -31,12 +31,12 @@ const Login = () => {
             <form onSubmit={e => submitHandler(e)} >
                 <fieldset>
                     <label htmlFor="username">Username</label>
-                    <input type="username" name="username" placeholder="Username" value={username} onChange={e => setUsername(e.target.value)} required />
+                    <input type="username" autoComplete="username" name="username" placeholder="Username" value={username} onChange={e => setUsername(e.target.value)} required />
                 </fieldset>
 
                 <fieldset>
                     <label htmlFor="password">Password</label>
-                    <input type="password" name="password" placeholder="Password" value={password} onChange={e => setPassword(e.target.value)} required />
+                    <input type="password" autoComplete="password" name="password" placeholder="Password" value={password} onChange={e => setPassword(e.target.value)} required />
                 </fieldset>
 
                 {isLoading ? <div className="loadingSpinner"><CircularProgress /></div> : <button type="submit">Login</button>}

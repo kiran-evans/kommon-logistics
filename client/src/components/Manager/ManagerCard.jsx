@@ -58,12 +58,12 @@ const ManagerCard = (props) => {
                         <div className="formTitle">Edit Manager</div>
                         <fieldset>
                             <label htmlFor="name">Name</label>
-                            <input required name="name" type="text" value={editedName} onChange={e => setEditedName(e.target.value)} placeholder="e.g. Joe Bloggs"></input>
+                            <input required name="name" type="text" autoComplete='name' value={editedName} onChange={e => setEditedName(e.target.value)} placeholder="e.g. Joe Bloggs"></input>
                         </fieldset>
 
                         <fieldset>
                             <label htmlFor="username">Username</label>
-                            <input required name="username" type="username" value={editedUsername} onChange={e => setEditedUsername(e.target.value)} placeholder="e.g. joe.bloggs"></input>
+                            <input required name="username" type="username" autoComplete='username' value={editedUsername} onChange={e => setEditedUsername(e.target.value)} placeholder="e.g. joe.bloggs"></input>
                         </fieldset>
 
                         <button type="submit">Save changes</button>

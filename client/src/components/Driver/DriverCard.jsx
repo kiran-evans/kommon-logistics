@@ -127,17 +127,17 @@ const DriverCard = (props) => {
                         <div className="formTitle">Edit Driver</div>
                         <fieldset>
                             <label htmlFor="name">Name</label>
-                            <input required name="name" type="text" value={editedName} onChange={e => setEditedName(e.target.value)} placeholder="e.g. Joe Bloggs"></input>
+                            <input required name="name" type="text" autoComplete='name' value={editedName} onChange={e => setEditedName(e.target.value)} placeholder="e.g. Joe Bloggs"></input>
                         </fieldset>
 
                         <fieldset>
                             <label htmlFor="username">Username</label>
-                            <input required name="username" type="username" value={editedUsername} onChange={e => setEditedUsername(e.target.value)} placeholder="e.g. joe.bloggs"></input>
+                            <input required name="username" type="username" autoComplete='username' value={editedUsername} onChange={e => setEditedUsername(e.target.value)} placeholder="e.g. joe.bloggs"></input>
                         </fieldset>
 
                         <fieldset>
                             <label htmlFor="maxCarryWeight">Max. carry weight / kg</label>
-                            <input required name="maxCarryWeight" type="number" value={editedMaxCarryWeight} onChange={e => setEditedMaxCarryWeight(e.target.value)} placeholder="1500"></input>
+                            <input required name="maxCarryWeight" type="number" autoComplete='off' value={editedMaxCarryWeight} onChange={e => setEditedMaxCarryWeight(e.target.value)} placeholder="1500"></input>
                         </fieldset>
 
                         {isLoading ? <div className="loadingSpinner"><CircularProgress /></div> : <button type="submit">Save changes</button>}
@@ -155,7 +155,7 @@ const DriverCard = (props) => {
                                 <form onSubmit={e => handleAssignSubmit(e)}>
                                     <div className="formTitle">Assign delivery</div>
                                     <fieldset>
-                                        <select onChange={e => setSelectedDeliveryId(e.target.value)} defaultValue='Default'>
+                                        <select required autoComplete='off' onChange={e => setSelectedDeliveryId(e.target.value)} defaultValue='Default'>
                                             <option disabled hidden value='Default'>Select delivery</option>
                                             {availableDeliveries.map(delivery => (
                                                 <option key={delivery._id} value={delivery._id}>Delivery {delivery._id.slice(-6)} ({delivery.location})</option>

@@ -45,7 +45,7 @@ const UserForm = (props) => {
             <div className="formTitle">Create New User</div>
                 <fieldset>
                     <label htmlFor="userType">Account Type</label>
-                    <select required name="userType" onChange={e => setUserType(e.target.value)} defaultValue='Default'>
+                    <select required name="userType" autoComplete="off" onChange={e => setUserType(e.target.value)} defaultValue='Default'>
                         <option disabled hidden value='Default'>Select account type</option>
                         <option value='Driver'>Driver</option>
                         <option value='Manager'>Manager</option>
@@ -56,22 +56,22 @@ const UserForm = (props) => {
                     <legend>Login details</legend>
 
                     <label htmlFor="username">Username</label>
-                    <input required type="username" name="username" placeholder="e.g. joe.bloggs" value={username} onChange={e => setUsername(e.target.value)} />
+                    <input required type="username" name="username" autoComplete="username" placeholder="e.g. joe.bloggs" value={username} onChange={e => setUsername(e.target.value)} />
 
                     <label htmlFor="password">Password</label>
-                    <input required type="password" name="password" placeholder="Password" value={password} onChange={e => setPassword(e.target.value)} />
+                    <input required type="password" name="password" autoComplete="password" placeholder="Password" value={password} onChange={e => setPassword(e.target.value)} />
                 </fieldset>
 
                 <fieldset>
                     <legend>Personal details</legend>
 
                     <label htmlFor="name">Name</label>
-                    <input required type="text" name="name" placeholder="e.g. Joe Bloggs" value={name} onChange={e => setName(e.target.value)} />
+                    <input required type="text" name="name" autoComplete="name" placeholder="e.g. Joe Bloggs" value={name} onChange={e => setName(e.target.value)} />
 
                     {(userType === 'Driver') && 
                         <>
                             <label htmlFor="maxCarryWeight">Max. carry weight / kg</label>
-                            <input required type="number" name="maxCarryWeight" placeholder="e.g. 1500" value={maxCarryWeight} onChange={e => setMaxCarryWeight(e.target.value)} />
+                            <input required type="number" name="maxCarryWeight" autoComplete="off" placeholder="e.g. 1500" value={maxCarryWeight} onChange={e => setMaxCarryWeight(e.target.value)} />
                         </>
                     }
                 </fieldset>

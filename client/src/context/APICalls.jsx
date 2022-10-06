@@ -11,8 +11,7 @@ export const loginCall = async (userCredentials, dispatch) => {
         return localStorage.setItem('user', JSON.stringify(res.data)); // Convert to string as localStorage cannot store objects
 
     } catch (err) {
-        dispatch({ type: 'LOGIN_FAILURE', payload: err });
-        return console.log(err);
+        return dispatch({ type: 'LOGIN_FAILURE', payload: err });
     }
 }
 

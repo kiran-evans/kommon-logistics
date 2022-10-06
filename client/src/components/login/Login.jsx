@@ -9,12 +9,14 @@ const Login = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
-    const { dispatch } = useContext(AuthContext);
+    const { dispatch, error } = useContext(AuthContext);
     const navigator = useNavigate();
+    const [formError] = useState(error);
 
     const submitHandler = async (e) => {
         e.preventDefault();
         setIsLoading(true);
+
         await loginCall({
             username: username,
             password: password,
@@ -38,6 +40,7 @@ const Login = () => {
                 </fieldset>
 
                 {isLoading ? <div className="loadingSpinner"><CircularProgress /></div> : <button type="submit">Login</button>}
+                {formError && <div className="formError">{formError.response.data.message}</div>}
             </form>
         </div>
     )

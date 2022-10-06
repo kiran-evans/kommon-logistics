@@ -6,6 +6,7 @@ import Header from '../header/Header';
 import NotFound from '../notfound/NotFound';
 import Register from '../register/Register';
 import Login from '../login/Login';
+import Account from '../account/Account';
 
 const MainWrapper = () => {
     const { user } = useContext(AuthContext);
@@ -18,6 +19,7 @@ const MainWrapper = () => {
                     <Routes>
                         <Route exact path="/" element={user ? <Navigate to="/dashboard" /> : <Login />} />
                         <Route exact path="/dashboard" element={user ? <Dashboard /> : <Navigate to="/" />} />
+                        <Route exact path="/account" element={user ? <Account /> : <Register />} />
                         <Route exact path="/register" element={user ? <Navigate to="/dashboard" /> : <Register />} />
                         <Route path="/*" element={user ? <NotFound /> : <Navigate to="/" />} />
                     </Routes>

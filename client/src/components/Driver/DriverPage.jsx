@@ -61,7 +61,9 @@ const DriverPage = () => {
                     <div className="dashboardColumn">
                         <div className="dashboardTitle">Map</div>
                         <div className="dashboardComponent">
-                            {displayMapPlotter && <MapPlotter assignedDeliveries={assignedDeliveries} />}
+                            <div className="mapContainer">
+                                {displayMapPlotter && <MapPlotter assignedDeliveries={assignedDeliveries} />}
+                            </div>
                         </div>
                     </div>
                 </div>

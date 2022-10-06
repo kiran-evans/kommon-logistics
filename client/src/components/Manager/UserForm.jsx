@@ -77,7 +77,7 @@ const UserForm = (props) => {
                 </fieldset>
 
 
-                {isLoading ? <div className="loadingSpinner"><CircularProgress /></div> : <button type="submit">Create delivery</button>}
+                {isLoading ? <div className="loadingSpinner"><CircularProgress /></div> : <button type="submit">Create user</button>}
             </form>
         </div>
     )

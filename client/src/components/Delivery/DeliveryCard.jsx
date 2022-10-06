@@ -29,6 +29,8 @@ const DeliveryCard = (props) => {
             setMyDriver(res.data);
             return setIsLoading(false);
         } catch (err) {
+            setMyDriver(null);
+            setIsLoading(false)
             return console.log(err);
         }
     }
@@ -186,7 +188,7 @@ const DeliveryCard = (props) => {
                         <>
                             {myDriver ? (
                                 isLoading ? <div className="cardInfo"><div className="loadingSpinner"><CircularProgress /></div> Loading assigned driver...</div> : <div className="cardInfo">Assigned driver: {`${myDriver.name} (Driver ${myDriver._id.slice(-6)})`}</div>
-                            ) : <div className="cardInfo">Assigned driver: None</div>
+                            ) : user.userType === 'MANAGER' && <div className="cardInfo">Assigned driver: None</div>
                             }
                             <div className="cardInfo">Delivery status: {isDelivered ? 'Delivered' : 'Not delivered'}</div>
                             {user.userType === 'DRIVER' && (

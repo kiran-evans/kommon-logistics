@@ -24,9 +24,24 @@ const Header = () => {
       <div className="userButtons">
         {user &&
           <>
-            <div className="userButton">Welcome, {user.name.split(" ")[0]}</div>
-            <div className="userButton" title="Manage account">{user.username} <AccountBox /></div>
-            <div className="userButton" title="Logout" onClick={() => logout()}><Logout /></div>
+            <div className="userItem noclick">
+              <div className="headerIconLabel">
+                {user.name.split(" ")[0]}&apos;s account
+              </div>
+            </div>
+            
+            <div className="userItem" title="Manage account" onClick={() => navigator('/account')}>
+              <div className="headerIconLabel">
+                {user.username}
+              </div>
+              <div className="headerIcon">
+                <AccountBox />
+              </div>
+            </div>
+          
+            <div className="userItem" title="Logout" onClick={() => logout()}>
+              <div className="headerIcon"><Logout /></div>
+            </div>
           </>
         }
       </div>

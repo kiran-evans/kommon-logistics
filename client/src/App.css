@@ -4,6 +4,10 @@
   color: white;
 }
 
+*[disabled] {
+  cursor: not-allowed;
+}
+
 a {
   text-decoration: none;
 }
@@ -48,6 +52,12 @@ form {
 .formTitle {
   font-size: 1.3em;
   font-weight: 700;
+}
+
+.formError {
+  font-size: 1.2em;
+  color: #d22;
+  margin-top: 0.5em;
 }
 
 fieldset {
@@ -143,11 +153,27 @@ button[type="submit"] {
   justify-content: flex-end;
 }
 
-.userButton {
+.userItem {
   display: flex;
-  margin: 0 2em;
-  transform: scale(1.5);
+  align-items: center;
+  padding: 0 2em;
+  font-size: 1.6em;
+  border-left: 0.1em solid white;
   cursor: pointer;
+}
+
+.userItem.noclick {
+  cursor: default;
+}
+
+.headerIconLabel {
+  display: flex;
+  padding: 0 1em;
+}
+
+.headerIcon {
+  display: flex;
+  transform: scale(1.5);
 }
 
 .mainContainer {
@@ -160,6 +186,9 @@ button[type="submit"] {
 /* --------------- */
 
 .loadingSpinner {
+  display: flex;
+  align-items: center;
+  align-self: flex-start;
   transform: scale(0.7);
   padding: 0;
   margin: 0;
@@ -289,7 +318,24 @@ button.deleteButton {
   display: flex;
 }
 
+.mapContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 1em 0;
+  border: 0.1em solid white;
+  border-radius: 0.3em;
+}
+
 #map {
   min-height: 50vh;
   width: 100%;
+}
+
+/* User Account */
+
+.accountInfo {
+  font-size: 1.7em;
+  margin: 0.7em 0;
 }

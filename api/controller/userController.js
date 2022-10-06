@@ -88,9 +88,18 @@ const updateUser = async (req, res) => {
       return res.status(404).json({ message: `Cannot update user as no user found with id=${req.query.id}` });
     }
 
+    let newBody = req.body;
+
+    if (newBody.password) {
+      // Hash new password
+      const salt = await bcrypt.genSalt(10);
+      const hashedPassword = await bcrypt.hash(req.body.password, salt);
+      newBody.password = hashedPassword;
+    }
+
     const updateSchema = await User.findByIdAndUpdate(
       req.query.id,
-      req.body,
+      newBody,
       { new: true, }
     );
     
@@ -125,13 +134,13 @@ const loginUser = async (req, res) => {
         });
 
         if (!user) {
-            return res.status(404).json("There was no account found with that username.");
+          return res.status(404).json({ message: "There was no account found with that username." });
         }
 
         const validPassword = await bcrypt.compare(req.body.password, user.password); // Check pw
 
         if (!validPassword) {
-            return res.status(400).json("The password you entered was not correct.");
+          return res.status(400).json({ message: "The password you entered was not correct." });
         }
 
         const {password, __v, ...other} = user._doc; // Exclude these fields from the response

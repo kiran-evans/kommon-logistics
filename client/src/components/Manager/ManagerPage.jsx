@@ -140,7 +140,7 @@ const ManagerPage = () => {
                         {dataChange === 'DELIVERY' ?
                             <div className="dashboardTitle">
                                 <div className="loadingSpinner"><CircularProgress /> </div>
-                                Loading {user.name.split(" ")[0]}&apos;s deliveries...
+                                Loading deliveries...
                             </div>
                             :
                             <>

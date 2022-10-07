@@ -24,6 +24,12 @@ const userSchema = mongoose.Schema({
     required: true,
     minLength: 3,
   },
+  email: {
+    unique: true,
+    type: String,
+    required: true,
+    minLength: 6
+  },
   password: {
     type: String,
     required: true,
@@ -38,6 +44,12 @@ const userSchema = mongoose.Schema({
     type: userInfoSchema,
     required: false,
     default: null,
+  },
+  token: {
+    type: String,
+    required: false,
+    unique: true,
+    default: null
   }
 });
 module.exports = {

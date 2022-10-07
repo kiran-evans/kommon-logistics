@@ -23,7 +23,7 @@ const ManagerCard = (props) => {
                 name: editedName,
             });
 
-            props.setDataChange(true);
+            props.setDataChange('MANAGER');
             return setIsEditing(false);
         } catch (err) {
             return console.log(err);
@@ -37,7 +37,7 @@ const ManagerCard = (props) => {
     const deleteButtonClick = async () => {
         try {
             await axios.delete(`${API_URL}/user?id=${id}`)
-            return props.setDataChange(true);
+            return props.setDataChange('MANAGER');
         } catch (err) {
             return console.log(err);
         }

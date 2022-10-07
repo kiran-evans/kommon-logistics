@@ -17,10 +17,10 @@ export const loginCall = async (userCredentials, dispatch) => {
 
 export const logoutCall = async (user, dispatch) => {
 
-    dispatch({ type: 'LOGOUT_START', payload: user });
+    dispatch({ type: 'LOGOUT_START' });
 
     try {
-        dispatch({ type: 'LOGOUT_SUCCESS' });
+        dispatch({ type: 'LOGOUT_SUCCESS', payload: user });
         return localStorage.clear();
 
     } catch (err) {

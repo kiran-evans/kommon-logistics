@@ -31,12 +31,14 @@ const Account = () => {
 
 
     const [editedUsername, setEditedUsername] = useState(user.username);
+    const [enteredNewEmail, setEnteredNewEmail] = useState(user.email);
+    const [reEnteredNewEmail, setReEnteredNewEmail] = useState('');
     const [editedUserType, setEditedUserType] = useState(user.userType);
     const [editedName, setEditedName] = useState(user.name);
     const [editedUserInfo, setEditedUserInfo] = useState(userInfo);
     const [enteredPassword, setEnteredPassword] = useState('');
-    const [reEnteredPassword, setReEnteredPassword] = useState('');
     const [enteredNewPassword, setEnteredNewPassword] = useState('');
+    const [reEnteredNewPassword, setReEnteredNewPassword] = useState('');
 
     const [isLoading, setIsLoading] = useState(false);
     const [formError, setFormError] = useState(null);
@@ -44,6 +46,17 @@ const Account = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         setIsLoading(true);
+
+        if (enteredNewEmail !== user.email && reEnteredNewEmail !== enteredNewEmail) {
+            setIsLoading(false);
+            return setFormError({ response: { data: { message: 'Please check your changed email address is correct' } } });
+        }
+
+        if (enteredNewPassword.length > 0 && enteredNewPassword !== reEnteredNewPassword) {
+            setIsLoading(false);
+            return setFormError({ response: { data: { message: 'Please check your new password is correct' } } })
+        }
+
         try {
             await axios.post(`${API_URL}/user/login`, {
                 username: user.username,
@@ -51,19 +64,23 @@ const Account = () => {
             });
 
             try {
-                let newBody = user;
+
+                // eslint-disable-next-line no-unused-vars
+                let { _id, ...newBody } = user;
     
                 if (editedUsername !== user.username) newBody.username = editedUsername;
+                if (enteredNewEmail !== user.email) newBody.email = enteredNewEmail;
                 if (editedUserType !== user.userType) newBody.userType = editedUserType;
                 if (editedName !== user.name) newBody.name = editedName;
                 if (editedUserInfo !== userInfo) newBody.userInfo = Object.fromEntries(editedUserInfo);
                 if (enteredNewPassword !== '') newBody.password = enteredNewPassword;
-                await axios.put(`${API_URL}/user?id=${user._id}`, { newBody });
+                await axios.put(`${API_URL}/user?id=${user._id}`, newBody);
     
                 setIsLoading(false);
                 return logout();
 
             } catch (err) {
+                setIsLoading(false);
                 return setFormError(err);
             }
         } catch (err) {
@@ -83,6 +100,7 @@ const Account = () => {
                         <div className="dashboardTitle">Your details</div>
                         <div className="dashboardComponent">
                             <div className="accountInfo">Username: {user.username}</div>
+                            <div className="accountInfo">Email address: {user.email}</div>
                             <div className="accountInfo">Name: {user.name}</div>
                             {userInfo && userInfo.map((info, i) => (
                                 <div className="accountInfo" key={i}>{info[0]}: {info[1]}</div>
@@ -102,7 +120,7 @@ const Account = () => {
                                 </fieldset>
                                 {userInfo &&
                                     <fieldset>
-                                        <legend>Employee info</legend>
+                                        <legend>Employee Info</legend>
                                         {userInfo.map((info, i) => (
                                             <div key={i}>
                                                 <label htmlFor={info[0]}>{info[0]}</label>
@@ -118,9 +136,6 @@ const Account = () => {
                                 <fieldset>
                                     <legend>Account Info</legend>
 
-                                    <label htmlFor="username">Username</label>
-                                    <input type="username" autoComplete="username" name="username" placeholder="e.g. joe.bloggs" value={editedUsername} onChange={e => setEditedUsername(e.target.value)} />
-
                                     <label htmlFor="userType">Account Type</label>
                                     {user.userType === 'MANAGER' ? 
                                         <input type="text" autoComplete="off" name="userType" placeholder="e.g. Driver" value={editedUserType} onChange={e => setEditedUserType(e.target.value)} />
@@ -128,20 +143,33 @@ const Account = () => {
                                         <input type="text" autoComplete="off" name="userType" placeholder={user.userType} disabled title="Contact your manager to change this" />
                                     }
 
-                                    <label htmlFor="newPassword">New Password</label>
-                                    <input type="password" autoComplete="new-password" name="newPassword" placeholder="New password" value={enteredNewPassword} onChange={e => setEnteredNewPassword(e.target.value)} />
-                                    
-                                    <label htmlFor="currentPassword">Current Password</label>
-                                    <input required type="password" autoComplete="current-password" name="currentPassword" placeholder="Password" value={enteredPassword} onChange={e => setEnteredPassword(e.target.value)} />
+                                    <label htmlFor="username">Username</label>
+                                    <input type="username" autoComplete="username" name="username" placeholder="e.g. joe.bloggs" value={editedUsername} onChange={e => setEditedUsername(e.target.value)} />
 
-                                    {enteredPassword.length > 0 &&
+                                    <label htmlFor="email">Email address</label>
+                                    <input type="email" autoComplete="email" name="email" placeholder="e.g. joe.bloggs@email.com" value={enteredNewEmail} onChange={e => setEnteredNewEmail(e.target.value)} />
+
+                                    {(enteredNewEmail.length !== user.email.length || enteredNewEmail === reEnteredNewEmail) && 
                                         <>
-                                            <label htmlFor="currentPassword">Re-enter Current Password</label>
-                                            <input required type="password" autoComplete="current-password" name="currentPassword" placeholder="Password" value={reEnteredPassword} onChange={e => setReEnteredPassword(e.target.value)} />
+                                            <label htmlFor="reEnteredNewEmail">Re-enter changed email address</label>
+                                            <input type="email" autoComplete="email" name="email" placeholder="e.g. joe.bloggs@email.com" value={reEnteredNewEmail} onChange={e => setReEnteredNewEmail(e.target.value)} />
                                         </>
                                     }
+
+                                    <label htmlFor="enteredNewPassword">New password</label>
+                                    <input type="password" autoComplete="new-password" name="enteredNewPassword" placeholder="New password" value={enteredNewPassword} onChange={e => setEnteredNewPassword(e.target.value)} />
+
+                                    {enteredNewPassword.length > 0 &&
+                                        <>
+                                            <label htmlFor="reEnteredNewPassword">Re-enter new password</label>
+                                            <input required type="password" autoComplete="new-password" name="reEnteredNewPassword" placeholder="New password" value={reEnteredNewPassword} onChange={e => setReEnteredNewPassword(e.target.value)} />
+                                        </>
+                                    }
+                                    
+                                    <label htmlFor="currentPassword">Current password</label>
+                                    <input required type="password" autoComplete="current-password" name="currentPassword" placeholder="Password" value={enteredPassword} onChange={e => setEnteredPassword(e.target.value)} />
                                 </fieldset>
-                                {enteredPassword === reEnteredPassword ? (isLoading ? <div className="loadingSpinner"><CircularProgress /></div> : <button type="submit">Save</button>) : <p>Please double check your current password</p>}
+                                {isLoading ? <div className="loadingSpinner"><CircularProgress /></div> : <button type="submit">Save</button>}
                                 {formError && <div className="formError">{formError.response.data.message}</div>}
                             </form>
                         </div>

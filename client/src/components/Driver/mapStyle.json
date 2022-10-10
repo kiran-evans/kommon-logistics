@@ -4,7 +4,7 @@
   "metadata": {},
   "sources": {
     "vectorTiles": {
-      "maxzoom": 22,
+      "maxzoom": 24,
       "minzoom": 0,
       "tiles": [
         "https://a.api.tomtom.com/map/2/tile/basic/{z}/{x}/{y}.pbf?key=ZZHfVjSMIc6t38xyQvWl1Z4ToPHPqnQV",
@@ -23,7 +23,7 @@
       "type": "background",
       "metadata": {"group": "area"},
       "minzoom": 10,
-      "maxzoom": 20,
+      "maxzoom": 24,
       "paint": {
         "background-color": [
           "interpolate",
@@ -1541,7 +1541,7 @@
       "metadata": {"group": "road"},
       "source": "vectorTiles",
       "source-layer": "roads",
-      "maxzoom": 13,
+      "maxzoom": 24,
       "filter": [
         "all",
         ["in", "category", "motorway", "trunk", "primary"],
@@ -3013,7 +3013,7 @@
       "source": "vectorTiles",
       "source-layer": "carto_labels",
       "minzoom": 7,
-      "maxzoom": 15,
+      "maxzoom": 24,
       "filter": [
         "any",
         [
@@ -3738,7 +3738,7 @@
       "source": "vectorTiles",
       "source-layer": "places",
       "minzoom": 18,
-      "maxzoom": 22,
+      "maxzoom": 24,
       "filter": ["all", ["==", "category", "address_point"], ["has", "number"]],
       "layout": {
         "symbol-placement": "point",
@@ -3876,7 +3876,7 @@
       "source": "vectorTiles",
       "source-layer": "places",
       "minzoom": 11,
-      "maxzoom": 17,
+      "maxzoom": 24,
       "filter": [
         "any",
         [
@@ -3921,7 +3921,7 @@
       "source": "vectorTiles",
       "source-layer": "places",
       "minzoom": 11,
-      "maxzoom": 17,
+      "maxzoom": 24,
       "filter": [
         "any",
         [
@@ -3960,7 +3960,7 @@
       "source": "vectorTiles",
       "source-layer": "places",
       "minzoom": 9,
-      "maxzoom": 17,
+      "maxzoom": 24,
       "filter": [
         "all",
         ["!=", "name", " "],
@@ -3995,7 +3995,7 @@
       "source": "vectorTiles",
       "source-layer": "places",
       "minzoom": 7,
-      "maxzoom": 17,
+      "maxzoom": 24,
       "filter": [
         "any",
         [
@@ -4059,7 +4059,7 @@
       "source": "vectorTiles",
       "source-layer": "places",
       "minzoom": 5,
-      "maxzoom": 16,
+      "maxzoom": 24,
       "filter": [
         "any",
         [
@@ -4176,7 +4176,7 @@
       "source": "vectorTiles",
       "source-layer": "places",
       "minzoom": 3,
-      "maxzoom": 15,
+      "maxzoom": 24,
       "filter": [
         "any",
         [
@@ -4381,7 +4381,7 @@
       "source": "vectorTiles",
       "source-layer": "places",
       "minzoom": 3,
-      "maxzoom": 15,
+      "maxzoom": 24,
       "filter": [
         "any",
         [

@@ -36,7 +36,7 @@ const DeliveryForm = (props) => {
             <form onSubmit={e => handleSubmit(e)}>
             <div className="formTitle">Create New Delivery</div>
                 <fieldset>
-                    <label htmlFor="location">Location</label>
+                    <label htmlFor="location">Destination Location</label>
                     <input required type="text" autoComplete="address" name="location" placeholder="e.g. 221b Baker Street, London" value={location} onChange={e => setLocation(e.target.value)} />
                 </fieldset>
 

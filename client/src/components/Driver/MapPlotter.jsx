@@ -46,7 +46,7 @@ const MapPlotter = (props) => {
           data: geojson
         },
         minzoom: 10,
-        maxzoom: 20,
+        maxzoom: 24,
         paint: {
           'line-color': '#272',
           'line-width': 5

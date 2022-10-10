@@ -30,7 +30,12 @@ const ManagerPage = () => {
         setIsLoading(true);
         try {
             const res = await axios.get(`${API_URL}/delivery`);
-            setDeliveries(res.data);
+            const list = [...res.data].sort((a, b) => {
+                if (a.dateAdded > b.dateAdded) return 1;
+                if (a.dateAdded < b.dateAdded) return -1;
+                return 0;
+            });
+            setDeliveries(list);
             setDataChange('NONE');
             return setIsLoading(false);
         } catch (err) {
@@ -42,7 +47,12 @@ const ManagerPage = () => {
         setIsLoading(true);
         try {
             const res = await axios.get(`${API_URL}/user?userType=driver`);
-            setDrivers(res.data);
+            const list = [...res.data].sort((a, b) => {
+                if (a.username > b.username) return 1;
+                if (a.username < b.username) return -1;
+                return 0;
+            });
+            setDrivers(list);
             setDataChange('NONE');
             return setIsLoading(false);
         } catch (err) {
@@ -54,7 +64,12 @@ const ManagerPage = () => {
         setIsLoading(true);
         try {
             const res = await axios.get(`${API_URL}/user?userType=manager`);
-            setManagers(res.data);
+            const list = [...res.data].sort((a, b) => {
+                if (a.username > b.username) return 1;
+                if (a.username < b.username) return -1;
+                return 0;
+            });
+            setManagers(list);
             setDataChange('NONE');
             return setIsLoading(false);
         } catch (err) {
@@ -209,7 +224,7 @@ const ManagerPage = () => {
                     <div className="dashboardColumn">
                         <div className="dashboardTitle">Manage</div>
                         <div className="dashboardComponent">
-                            <DeliveryForm setDataChange={setDataChange} />
+                            <DeliveryForm drivers={drivers} setDataChange={setDataChange} />
                             <UserForm setDataChange={setDataChange} />
                         </div>
                     </div>

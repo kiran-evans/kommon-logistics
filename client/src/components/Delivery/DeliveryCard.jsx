@@ -175,7 +175,7 @@ const DeliveryCard = (props) => {
                                     <select required autoComplete="off" onChange={e => setSelectedDriverId(e.target.value)} defaultValue={assignedDriverId ? assignedDriverId : 'Default'}>
                                         <option disabled hidden value='Default'>Select driver</option>
                                         {drivers.map(driver => (
-                                            <option key={driver._id} value={driver._id}>{driver.name} (Driver number {parseInt(driver._id.slice(-3).toUpperCase(), 16)})</option>
+                                            <option key={driver._id} value={driver._id}>{driver.name} ({driver.username})</option>
                                         ))}
                                     </select>
                                 </fieldset>
@@ -185,7 +185,7 @@ const DeliveryCard = (props) => {
                         :
                         <>
                             {myDriver ? (
-                                isLoading ? <div className="cardInfo"><div className="loadingSpinner"><CircularProgress /></div> Loading assigned driver...</div> : <div className="cardInfo">Assigned driver: {`${myDriver.name} (Driver ${myDriver._id.slice(-6)})`}</div>
+                                isLoading ? <div className="cardInfo"><div className="loadingSpinner"><CircularProgress /></div> Loading assigned driver...</div> : <div className="cardInfo">Assigned driver: {`${myDriver.name} (${myDriver.username})`}</div>
                             ) : user.userType === 'MANAGER' && <div className="cardInfo">Assigned driver: None</div>
                             }
                             <div className="cardInfo">Delivery status: {isDelivered ? 'Delivered' : 'Not delivered'}</div>

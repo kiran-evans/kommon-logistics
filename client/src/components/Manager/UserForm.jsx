@@ -35,6 +35,7 @@ const UserForm = (props) => {
 
             props.setDataChange(userType);
             setUsername('');
+            setEmail('');
             setPassword('');
             setName('');
             setMaxCarryWeight('');
@@ -53,8 +54,8 @@ const UserForm = (props) => {
             const splitName = name.split(" "); // Split name by space
 
             while (!usernameIsUnique) {
-                //    newUsername = first initial    + first two characters of last name         + digit
-                const newUsername = (splitName[0][0] + splitName[splitName.length-1].slice(0, 2) + usernameDigit).toLowerCase();
+                //    newUsername = first initial    + first four characters of last name         + digit
+                const newUsername = (splitName[0][0] + splitName[splitName.length-1].slice(0, 4) + usernameDigit).toLowerCase();
 
                 try {
                     const res = await axios.get(`${API_URL}/user?username=${newUsername}&checkIsUnique=true`); // If no matching username is found in the db

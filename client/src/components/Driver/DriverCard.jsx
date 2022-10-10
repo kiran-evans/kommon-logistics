@@ -8,7 +8,7 @@ import { CircularProgress } from '@mui/material';
 
 const DriverCard = (props) => {
 
-    const API_URL = import.meta.env.VITE_API_URL;
+    const API_URL = import.meta.env.KL_API_URL;
 
     const { id, username, name, userInfo } = props;
 

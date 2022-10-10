@@ -7,7 +7,7 @@ import { AuthContext } from "../../context/AuthContext";
 import { useEffect } from "react";
 
 const DeliveryCard = (props) => {
-    const API_URL = import.meta.env.VITE_API_URL;
+    const API_URL = import.meta.env.KL_API_URL;
     const { id, location, assignedDriverId, isDelivered, weight, dateAdded } = props;
     const { user } = useContext(AuthContext);
 

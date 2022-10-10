@@ -6,7 +6,7 @@ import { useEffect } from 'react';
 function App() {
 
   useEffect(() => {
-    document.title = import.meta.env.VITE_APP_TITLE;
+    document.title = import.meta.env.KL_APP_TITLE;
   }, [])
 
   return (

@@ -7,8 +7,8 @@ import { useEffect } from "react";
 import { Edit } from "@mui/icons-material";
 
 const DeliveryForm = (props) => {
-    const API_URL = import.meta.env.VITE_API_URL;
-    const TT_API_KEY = import.meta.env.VITE_TOM_TOM_API_KEY;
+    const API_URL = import.meta.env.KL_API_URL;
+    const TT_API_KEY = import.meta.env.KL_TOM_TOM_API_KEY;
 
     const [addressQuery, setAddressQuery] = useState('');
     const [results, setResults] = useState('');

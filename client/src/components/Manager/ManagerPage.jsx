@@ -13,7 +13,7 @@ const ManagerPage = () => {
 
     const { user } = useContext(AuthContext);
 
-    const API_URL = import.meta.env.VITE_API_URL;
+    const API_URL = import.meta.env.KL_API_URL;
 
     const [isLoading, setIsLoading] = useState(false);
     const [drivers, setDrivers] = useState([]);

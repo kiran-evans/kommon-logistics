@@ -9,7 +9,7 @@ import { AuthContext } from "../../context/AuthContext";
 
 const Account = () => {
 
-    const API_URL = import.meta.env.VITE_API_URL;
+    const API_URL = import.meta.env.KL_API_URL;
     const { user, dispatch } = useContext(AuthContext);
 
     const [userInfo, setUserInfo] = useState(null);

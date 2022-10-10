@@ -6,7 +6,7 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 
 const PasswordReset = () => {
 
-    const API_URL = import.meta.env.VITE_API_URL;
+    const API_URL = import.meta.env.KL_API_URL;
 
     const [urlParams] = useSearchParams();
     const navigator = useNavigate();

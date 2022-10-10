@@ -9,7 +9,7 @@ import MapPlotter from "./MapPlotter";
 const DriverPage = () => {
 
     const { user } = useContext(AuthContext);
-    const API_URL = import.meta.env.VITE_API_URL;
+    const API_URL = import.meta.env.KL_API_URL;
 
     const [dataChange, setDataChange] = useState(false);
     const [isLoading, setIsLoading] = useState(false);

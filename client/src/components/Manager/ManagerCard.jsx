@@ -6,7 +6,7 @@ import { PropTypes } from "prop-types";
 
 const ManagerCard = (props) => {
 
-    const API_URL = import.meta.env.VITE_API_URL;
+    const API_URL = import.meta.env.KL_API_URL;
 
     const { id, username, name } = props;
 

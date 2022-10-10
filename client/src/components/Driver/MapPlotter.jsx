@@ -9,7 +9,7 @@ import { CircularProgress } from '@mui/material';
 
 const MapPlotter = (props) => {
 
-  const MAP_KEY = import.meta.env.VITE_TOM_TOM_API_KEY;
+  const MAP_KEY = import.meta.env.KL_TOM_TOM_API_KEY;
   
   const [markers, setMarkers] = useState([]);
   const [theMap, setTheMap] = useState();

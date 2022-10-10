@@ -114,7 +114,7 @@ const DriverCard = (props) => {
     return (
         <div className="card">
             <div className="cardHeader">
-                <div className="cardTitle">{name} (Driver {id.slice(-6)})</div>
+                <div className="cardTitle">{name} ({username})</div>
                 <div className="managerButtons">
                     <button className="editButton" title="Manage this driver's deliveries" onClick={() => deliveriesButtonClick()}><LocalShipping /></button>
                     <button className="editButton" title="Edit this driver" onClick={() => editButtonClick()}><EditIcon /></button>

@@ -46,7 +46,7 @@ const ManagerCard = (props) => {
     return (
         <div className="card">
             <div className="cardHeader">
-                <div className="cardTitle">{name} (Manager {id.slice(-6)})</div>
+                <div className="cardTitle">{name} ({username})</div>
                 <div className="managerButtons">
                     <button className="editButton" title="Edit this manager" onClick={() => editButtonClick()}><EditIcon /></button>
                     <button className="deleteButton" title="Delete this manager" onClick={() => deleteButtonClick()}><DeleteIcon /></button>
